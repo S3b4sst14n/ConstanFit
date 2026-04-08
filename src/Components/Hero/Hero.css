@@ -1,0 +1,256 @@
+/* HERO */
+.hero {
+  min-height: 70dvh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* CONTENEDOR GENERAL */
+.hero-overlay {
+  width: 100%;
+  max-width: 1300px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: clamp(40px, 8vw, 120px);
+}
+
+/* LEFT SIDE */
+.hero-content {
+  color: #fff;
+  max-width: 660px;
+}
+
+/* Glass */
+.glass-box {
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  background: #00000036;
+  padding: 25px;
+  border-radius: 35px;
+  border: 1px solid #ffffff1a;
+  transition: transform 0.4s ease;
+}
+
+.glass-box:hover {
+  transform: translateY(-6px);
+  box-shadow:
+    0 20px 60px #00000080,
+    inset 0 1px 0 #ffffff40;
+}
+
+.glass-box h1 {
+  text-align: center;
+  font-size: clamp(32px, 5vw, 64px);
+  font-weight: 70;
+  line-height: 1.1;
+  white-space: nowrap;
+}
+
+.glass-box p {
+  text-align: center;
+  font-size: 32px;
+  margin-top: 10px;
+}
+
+/* BENEFITS */
+.benefits {
+  display: flex;
+  gap: 20px;
+  font-size: 26px;
+  margin: 20px 0;
+  flex-wrap: wrap;
+  justify-content: center;
+  text-decoration: underline;
+}
+
+.benefits span {
+  position: relative;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+/* SOCIAL */
+.social-icons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.social-icons img {
+  width: 45px;
+  cursor: pointer;
+  transition:
+    transform 0.3s ease,
+    opacity 0.3s ease;
+}
+
+.social-icons img:hover {
+  transform: scale(1.15);
+  opacity: 0.8;
+}
+
+/* RIGHT SIDE */
+.hero-image {
+  text-align: center;
+}
+
+.image-card {
+  position: relative;
+  background: #00000036;
+  border-radius: 35px;
+  padding: 20px 20px 25px;
+  border: 1px solid #ffffff1a;
+  box-shadow: 0 15px 40px #00000040;
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  transition: transform 0.4s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.image-card:hover {
+  transform: translateY(-8px);
+}
+
+.image-card img {
+  height: 65vh;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* CTA ahora vive dentro del card */
+.cta-button {
+  display: inline-block;
+  margin-top: 16px;
+  font-size: clamp(16px, 1.8vw, 22px);
+  color: #ffffff;
+  text-decoration: none;
+  position: relative;
+}
+
+.cta-button::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  bottom: -6px;
+  left: 0;
+  background: #ffffff;
+}
+
+.cta-button:hover {
+  opacity: 0.7;
+}
+
+/* Tablet landscape */
+@media (max-width: 1024px) {
+  .hero-overlay {
+    gap: clamp(20px, 4vw, 60px);
+  }
+
+  .image-card img {
+    height: clamp(220px, 45vh, 420px);
+  }
+  .glass-box p {
+    text-align: center;
+    font-size: 25px;
+    margin-top: 20px;
+  }
+}
+
+/* Tablet portrait */
+@media (max-width: 768px) {
+  .hero {
+    padding: 30px 20px;
+    align-items: flex-start;
+  }
+
+  .hero-overlay {
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+  }
+
+  .hero-content {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .benefits {
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+
+  /* La imagen va debajo del contenido */
+  .hero-image {
+    width: 100%;
+    order: 1;
+  }
+
+  .hero-content {
+    order: 0;
+  }
+
+  .image-card img {
+    height: auto;
+    width: 100%;
+    max-height: 50vh;
+    object-fit: contain;
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .hero {
+    padding: 20px 14px;
+  }
+
+  .glass-box {
+    padding: 18px;
+    border-radius: 22px;
+  }
+
+  .benefits {
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .social-icons img {
+    width: 34px;
+  }
+
+  .hero-image {
+    width: 100%;
+    order: 1; /* ← imagen al final */
+  }
+
+  .hero-content {
+    order: 0; /* ← contenido arriba */
+  }
+
+  .image-card {
+    padding: 14px;
+    border-radius: 22px;
+  }
+
+  .image-card img {
+    height: auto;
+    width: 100%;
+    max-height: 40vh;
+    object-fit: contain;
+  }
+
+  .cta-button {
+    margin-top: 18px;
+    font-size: 16px;
+  }
+}

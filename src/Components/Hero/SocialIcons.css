@@ -1,0 +1,19 @@
+.social-icons a {
+  width: 50px;
+  height: 50px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  color: white;
+  transition: 0.3s ease;
+}
+
+.social-icons a:hover {
+  background: white;
+  color: black;
+  transform: translateY(-5px);
+}
