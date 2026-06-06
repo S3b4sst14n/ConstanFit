@@ -1,13 +1,18 @@
 import Model from "../../assets/images/Model.png";
-import CTAButton from "./CTAButton";
 
 const HeroImage = () => {
   return (
     <div className="hero-image">
-      <div className="image-card">
-        <img src={Model} alt="Modelo fitness" />
+      <div className="hero-image__glow" aria-hidden />
+
+      <div className="hero-image__card">
+        <img src={Model} alt="Atleta entrenando en ConstanFit" />
       </div>
-      <CTAButton />
+
+      <div className="hero-float" aria-hidden>
+        <span className="hero-float__num">+500</span>
+        <span className="hero-float__label">miembros activos</span>
+      </div>
     </div>
   );
 };

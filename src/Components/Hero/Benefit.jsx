@@ -1,10 +1,21 @@
+import { Check } from "lucide-react";
+
+const benefits = [
+  "Planes accesibles",
+  "Entrenadores capacitados",
+  "Ambiente motivador",
+];
+
 const Benefits = () => {
   return (
-    <div className="benefits">
-      <span>Planes accesibles</span>
-      <span>Entrenadores capacitados</span>
-      <span>Ambiente motivador</span>
-    </div>
+    <ul className="hero-benefits">
+      {benefits.map((b) => (
+        <li className="hero-benefits__item" key={b}>
+          <Check size={16} strokeWidth={2.5} aria-hidden />
+          <span>{b}</span>
+        </li>
+      ))}
+    </ul>
   );
 };
 

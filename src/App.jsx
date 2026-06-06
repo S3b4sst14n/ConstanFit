@@ -1,27 +1,40 @@
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 import Home from './Components/Home/Home'
-import Navbar from './Components/layouts/Navbar/Navbar'
-import Footer from './Components/layouts/Footer/Footer'
 import Planes from './Components/Pages/Planes'
 import Acerca from './Components/Pages/Acerca'
 import Login from './Components/Pages/Login'
+import Dashboard from './Components/Pages/Dashboard'
+import Asistencias from './Components/Pages/Asistencias'
+import RequireRole from './Components/routing/RequireRole'
+import PublicLayout from './Components/layouts/PublicLayout'
+import DashboardLayout from './Components/layouts/DashboardLayout/DashboardLayout'
 
 function App() {
   return (
-    <>
-      <Router>
-        <Navbar/>
-        <div className="overlay">
-        <Routes>
+    <Router>
+      <Routes>
+        {/* Sitio público: nav superior + footer */}
+        <Route element={<PublicLayout/>}>
           <Route path='/' element={<Home/>}/>
           <Route path='/Planes' element={<Planes/>}/>
           <Route path='/Acerca' element={<Acerca/>}/>
           <Route path='/Login' element={<Login/>}/>
-        </Routes>
-        </div>
-        <Footer/>
-      </Router>
-    </>
+        </Route>
+
+        {/* Panel admin/staff: sidebar lateral colapsable */}
+        <Route
+          path='/Dashboard'
+          element={
+            <RequireRole roles={['ADMIN', 'STAFF']}>
+              <DashboardLayout/>
+            </RequireRole>
+          }
+        >
+          <Route index element={<Dashboard/>}/>
+          <Route path='Asistencias' element={<Asistencias/>}/>
+        </Route>
+      </Routes>
+    </Router>
   )
 }
 

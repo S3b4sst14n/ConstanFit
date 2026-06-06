@@ -1,135 +1,320 @@
-/* ─── Section ───────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════
+   PLANES · ConstanFit — membresías estilo SaaS premium
+   ═══════════════════════════════════════════════════════════ */
+
 .plans-section {
   min-height: calc(100vh - 107px);
-  padding: 2.5rem ;
-  font-family: 'Nunito', sans-serif;
-  color: var(--text-primary);
+  width: 100%;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: var(--sp-16, 4rem) var(--sp-8, 2rem) var(--sp-12, 3rem);
+  font-family: var(--font-body, 'Nunito', sans-serif);
+  color: var(--text-1, var(--text-primary));
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  overflow: hidden;
 }
 
-/* ─── Desktop Grid ──────────────────────────────────── */
+/* ─── Encabezado ────────────────────────────────────── */
+.plans-header {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto var(--sp-12, 3rem);
+}
+
+.plans-overline {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2, 0.5rem);
+  font-size: var(--fs-xs, 0.75rem);
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold, var(--accent));
+}
+
+.plans-overline::before {
+  content: "";
+  width: 26px;
+  height: 1px;
+  background: var(--gold, var(--accent));
+}
+
+.plans-title {
+  font-family: var(--font-display, 'Rajdhani', sans-serif);
+  font-size: var(--fs-h1, clamp(2rem, 4vw, 3rem));
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin: var(--sp-3, 0.75rem) 0 var(--sp-3, 0.75rem);
+}
+
+.plans-subtitle {
+  margin: 0;
+  color: var(--text-2, var(--text-muted));
+  font-size: var(--fs-lg, 1.125rem);
+  line-height: 1.55;
+}
+
+/* ─── Rejilla ───────────────────────────────────────── */
 .plans-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 2.5rem;
+  gap: var(--sp-6, 1.5rem);
   align-items: stretch;
-  flex: 1;
-  min-height: 0; 
+  padding-top: var(--sp-3, 1rem); /* aire para el badge */
 }
 
-/* ─── Plan Card ─────────────────────────────────────── */
+/* ─── Tarjeta ───────────────────────────────────────── */
 .plan-card {
-  background: #00000036;
-  border: 1px solid #ffffff1a;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-radius: 1.2rem;
-  padding: 1.5rem 1.5rem 2.8rem;
+  position: relative;
+  isolation: isolate;
+  background: var(--grad-surface, rgba(0, 0, 0, 0.32));
+  border: 1px solid var(--line, rgba(255, 255, 255, 0.1));
+  border-radius: var(--r-lg, 1.2rem);
+  padding: var(--sp-8, 2rem) var(--sp-6, 1.6rem);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.85rem;
+  gap: var(--sp-3, 0.85rem);
   text-align: center;
-  box-shadow: var(--glass-shadow);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: var(--sh-2, var(--glass-shadow));
+  overflow: hidden;
+  transition: transform 0.35s var(--ease, ease), box-shadow 0.35s var(--ease, ease),
+    border-color 0.35s var(--ease, ease);
   height: 100%;
   box-sizing: border-box;
 }
 
-.plan-card:hover {
-  transform: translateY(-6px);
-  box-shadow: var(--glass-shadow), 0 0 24px rgba(255, 255, 255, 0.05);
+/* Brillo diagonal que recorre la tarjeta al pasar el cursor */
+.plan-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(120deg, transparent 30%, rgba(255, 255, 255, 0.06) 50%, transparent 70%);
+  transform: translateX(-120%);
+  transition: transform 0.7s var(--ease, ease);
+  pointer-events: none;
 }
 
-/* Featured card — más grande y destacada */
+.plan-card:hover {
+  transform: translateY(-8px);
+  border-color: var(--line-strong, rgba(255, 255, 255, 0.2));
+  box-shadow: var(--sh-4, var(--glass-shadow));
+}
+
+.plan-card:hover::after {
+  transform: translateX(120%);
+}
+
+/* ─── Destacada ─────────────────────────────────────── */
 .plan-card--featured {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.144);
-  padding: 3rem 1.75rem 3.2rem;
+  background: linear-gradient(165deg, rgba(240, 180, 41, 0.10), var(--bg-1, rgba(0, 0, 0, 0.4)) 55%);
+  padding: var(--sp-16, 3.5rem) var(--sp-6, 1.75rem) var(--sp-8, 1.75rem);
   transform: scale(1.04);
+  box-shadow: var(--sh-4), var(--sh-gold, var(--featured-glow));
+}
+
+/* Borde dorado por máscara (no un simple border-color) */
+.plan-card--featured::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: var(--grad-gold, linear-gradient(135deg, #ffd166, #c8881a));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
 }
 
 .plan-card--featured:hover {
-  transform: scale(1.04) translateY(-6px);
+  transform: scale(1.04) translateY(-8px);
+  box-shadow: var(--sh-4), 0 16px 48px var(--gold-glow, rgba(240, 180, 41, 0.35));
 }
 
-/* Icon */
+/* ─── Badge ─────────────────────────────────────────── */
+.plan-card__badge {
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--grad-gold, var(--accent));
+  color: #161009;
+  font-family: var(--font-body, 'Nunito', sans-serif);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.4rem 0.9rem;
+  border-radius: var(--r-full, 999px);
+  box-shadow: 0 4px 16px var(--gold-glow, rgba(240, 180, 41, 0.45));
+  white-space: nowrap;
+  z-index: 1;
+}
+
+/* ─── Icono ─────────────────────────────────────────── */
 .plan-card__icon-wrapper {
-  background: rgba(255, 255, 255, 0.07);
-  border-radius: 0.9rem;
-  width: 80px;
-  height: 80px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: var(--r-md, 0.9rem);
+  width: 64px;
+  height: 64px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2.4rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-2, var(--text-primary));
+  border: 1px solid var(--line, rgba(255, 255, 255, 0.1));
+  transition: color 0.35s var(--ease, ease), border-color 0.35s var(--ease, ease),
+    background 0.35s var(--ease, ease);
 }
 
-/* Title */
+.plan-card:hover .plan-card__icon-wrapper {
+  border-color: rgba(240, 180, 41, 0.4);
+  background: rgba(240, 180, 41, 0.08);
+}
+
+.plan-card--featured .plan-card__icon-wrapper {
+  border-color: rgba(240, 180, 41, 0.4);
+  background: rgba(240, 180, 41, 0.06);
+  box-shadow: 0 0 24px rgba(240, 180, 41, 0.18);
+}
+
+/* ─── Título ────────────────────────────────────────── */
 .plan-card__title {
-  font-family: 'Rajdhani', sans-serif;
-  font-size: 1.3rem;
+  font-family: var(--font-display, 'Rajdhani', sans-serif);
+  font-size: var(--fs-h3, 1.4rem);
   font-weight: 700;
-  letter-spacing: 0.05em;
-  color: var(--text-primary);
+  letter-spacing: -0.01em;
+  color: var(--text-1, var(--text-primary));
   margin: 0;
 }
 
-/* Price */
+/* ─── Precio ────────────────────────────────────────── */
+.plan-card__price-wrap {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  justify-content: center;
+  margin-top: var(--sp-1, 0.25rem);
+}
+
 .plan-card__price {
-  font-family: 'Rajdhani', sans-serif;
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin: 0;
+  font-family: var(--font-display, 'Rajdhani', sans-serif);
+  font-size: 2.5rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text-1, var(--text-primary));
+  line-height: 1;
 }
 
-/* Description */
+.plan-card--featured .plan-card__price {
+  color: var(--gold, var(--accent));
+}
+
+.plan-card__period {
+  color: var(--text-3, var(--text-muted));
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.plan-card__perday {
+  font-size: var(--fs-sm, 0.875rem);
+  color: var(--gold, var(--accent));
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+/* ─── Descripción ───────────────────────────────────── */
 .plan-card__description {
-  font-size: 32px;
-  color: var(--text-muted);
+  font-size: var(--fs-sm, 0.95rem);
+  color: var(--text-2, var(--text-muted));
   line-height: 1.5;
   margin: 0;
-  flex: 1;
 }
 
-/* Button */
+/* ─── Perks ─────────────────────────────────────────── */
+.plan-card__perks {
+  list-style: none;
+  padding: var(--sp-4, 1rem) 0 0;
+  margin: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3, 0.65rem);
+  flex: 1;
+  border-top: 1px solid var(--line, rgba(255, 255, 255, 0.08));
+}
+
+.plan-card__perks li {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2, 0.55rem);
+  text-align: left;
+  color: var(--text-2, var(--text-muted));
+  font-size: var(--fs-sm, 0.92rem);
+  line-height: 1.35;
+}
+
+.plan-card__perks li svg {
+  flex-shrink: 0;
+  color: var(--success, var(--accent-green));
+  background: rgba(74, 222, 128, 0.12);
+  border-radius: var(--r-full, 999px);
+  padding: 2px;
+  width: 18px;
+  height: 18px;
+}
+
+.plan-card--featured .plan-card__perks li svg {
+  color: var(--gold, var(--accent));
+  background: rgba(240, 180, 41, 0.15);
+}
+
+/* ─── Botón ─────────────────────────────────────────── */
 .plan-card__btn {
-  margin-top: auto;
-  padding: 0.55rem 1.4rem;
-  border-radius: 2rem;
-  border: 1.5px solid var(--accent);
-  background: transparent;
-  color: var(--accent);
-  font-family: 'Nunito', sans-serif;
-  font-size: 0.9rem;
-  font-weight: 700;
+  margin-top: var(--sp-2, auto);
+  padding: 0.8rem 1.6rem;
+  border-radius: var(--r-full, 2rem);
+  border: 1.5px solid var(--line-strong, var(--accent));
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-1, var(--accent));
+  font-family: var(--font-body, 'Nunito', sans-serif);
+  font-size: var(--fs-sm, 0.95rem);
+  font-weight: 600;
   cursor: pointer;
-  transition: background 0.25s ease, color 0.25s ease, transform 0.2s ease;
-  letter-spacing: 0.03em;
+  transition: background 0.25s var(--ease, ease), color 0.25s var(--ease, ease),
+    transform 0.2s var(--ease, ease), box-shadow 0.25s var(--ease, ease),
+    border-color 0.25s var(--ease, ease);
+  letter-spacing: 0.01em;
+  width: 100%;
+  max-width: 240px;
 }
 
 .plan-card__btn:hover {
-  background: var(--accent);
-  color: #1a1a1a;
-  transform: scale(1.05);
+  border-color: var(--gold, var(--accent));
+  color: var(--gold, var(--accent));
+  background: rgba(240, 180, 41, 0.08);
+  transform: translateY(-2px);
 }
 
 .plan-card__btn--featured {
-  border-color: var(--accent-green);
-  color: var(--accent-green);
+  background: var(--grad-gold, var(--accent));
+  border-color: transparent;
+  color: #161009;
+  box-shadow: var(--sh-gold, none);
 }
 
 .plan-card__btn--featured:hover {
-  background: var(--accent-green);
-  color: #1a1a1a;
+  color: #161009;
+  background: var(--grad-gold, var(--accent));
+  box-shadow: 0 12px 32px var(--gold-glow, rgba(240, 180, 41, 0.35));
 }
 
-/* ─── Carousel (mobile only) ────────────────────────── */
+/* ═══ Carrusel (solo móvil) ═════════════════════════════ */
 .plans-carousel {
   display: none;
   position: relative;
@@ -143,12 +328,13 @@
 .carousel-track-wrapper {
   overflow: hidden;
   width: 100%;
-  border-radius: 1.2rem;
+  border-radius: var(--r-lg, 1.2rem);
+  padding: 1rem 0;
 }
 
 .carousel-track {
   display: flex;
-  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.4s var(--ease, cubic-bezier(0.4, 0, 0.2, 1));
 }
 
 .carousel-slide {
@@ -157,58 +343,83 @@
   box-sizing: border-box;
 }
 
-/* Arrow buttons */
 .carousel-btn {
   position: absolute;
-  top: 42%;
+  top: 50%;
   transform: translateY(-50%);
   z-index: 10;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(18, 18, 20, 0.7);
+  border: 1px solid var(--line-strong, rgba(255, 255, 255, 0.15));
   color: white;
-  width: 38px;
-  height: 38px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   backdrop-filter: blur(8px);
-  transition: background 0.2s ease, transform 0.2s ease;
+  transition: background 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
 }
 
 .carousel-btn:hover {
-  background: rgba(0, 0, 0, 0.3);
-  transform: translateY(-50%) scale(1.1);
+  background: rgba(240, 180, 41, 0.18);
+  border-color: rgba(240, 180, 41, 0.5);
+  transform: translateY(-50%) scale(1.08);
 }
 
 .carousel-btn--prev { left: -8px; }
 .carousel-btn--next { right: -8px; }
 
+.carousel-dots {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-top: 1rem;
+  width: 100%;
+}
 
-/* ─── Responsive ────────────────────────────────────── */
+.carousel-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: 0;
+  padding: 0;
+  background: rgba(255, 255, 255, 0.25);
+  cursor: pointer;
+  transition: background 0.25s ease, width 0.25s ease;
+}
+
+.carousel-dot:hover { background: rgba(255, 255, 255, 0.5); }
+
+.carousel-dot--active {
+  background: var(--gold, var(--accent));
+  width: 24px;
+  border-radius: 999px;
+}
+
+/* ═══ Responsive ════════════════════════════════════════ */
+@media (max-width: 900px) {
+  .plans-grid { gap: 1.25rem; }
+  .plan-card--featured { transform: scale(1.02); }
+  .plan-card--featured:hover { transform: scale(1.02) translateY(-8px); }
+}
+
 @media (max-width: 768px) {
-  .plans-grid {
-    display: none;
-  }
-
-  .plans-carousel {
-    display: flex;
-  }
+  .plans-grid { display: none; }
+  .plans-carousel { display: flex; }
 
   .plans-section {
-    padding: 2rem 1.25rem 2.5rem;
+    padding: var(--sp-12, 3rem) var(--sp-4, 1.25rem) var(--sp-8, 2.5rem);
     height: auto;
     min-height: 100vh;
-    overflow: visible;
   }
 
-  .plan-card--featured {
-    transform: none;
-  }
+  .plans-header { margin-bottom: var(--sp-6, 1.5rem); }
 
-  .plan-card--featured:hover {
-    transform: translateY(-6px);
-  }
+  .plan-card--featured,
+  .plan-card--featured:hover { transform: none; }
+
+  .plan-card--featured:hover { transform: translateY(-8px); }
 }

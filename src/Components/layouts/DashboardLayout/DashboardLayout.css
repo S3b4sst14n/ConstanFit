@@ -1,0 +1,291 @@
+/* ═══════════════════════════════════════════════════════════
+   DASHBOARD LAYOUT · sidebar riel colapsable (ConstanFit)
+   ═══════════════════════════════════════════════════════════ */
+
+.dlayout {
+  --rail: 76px;
+  --rail-expanded: 248px;
+  min-height: 100vh;
+}
+
+/* El panel no usa el header superior: anula el padding-top global del body. */
+body.no-nav-offset {
+  padding-top: 0;
+}
+
+/* ── Sidebar ─────────────────────────────────────────── */
+.dsidebar {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: var(--rail);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem 0.75rem;
+  background: rgba(10, 10, 10, 0.96);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  z-index: 1000;
+  overflow: hidden;
+  transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Expandir solo cuando está abierto (controlado por el botón, no por hover). */
+.dlayout--pinned .dsidebar {
+  width: var(--rail-expanded);
+}
+
+.dsidebar-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  min-height: 52px;
+  padding: 0 0.2rem;
+}
+
+/* Riel contraído: el logo queda centrado (el control vive fuera, en el borde). */
+.dlayout:not(.dlayout--pinned) .dsidebar-top {
+  justify-content: center;
+}
+
+.dsidebar-logo {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.dsidebar-logo img {
+  height: 40px;
+  width: auto;
+  object-fit: contain;
+}
+
+/* Botón flotante de expandir/contraer, anclado al borde derecho del riel
+   y centrado verticalmente. Vive fuera del aside para no recortarse y se
+   desplaza junto con el ancho del menú. */
+.dsidebar-toggle {
+  position: fixed;
+  top: 50%;
+  left: var(--rail);
+  transform: translate(-50%, -50%);
+  z-index: 1001;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: #15151a;
+  color: #f0b429;
+  font-size: 0.8rem;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+  transition: left 0.25s cubic-bezier(0.4, 0, 0.2, 1), background 0.2s ease, transform 0.2s ease;
+}
+
+.dsidebar-toggle:hover {
+  background: #20202a;
+  border-color: rgba(240, 180, 41, 0.5);
+  transform: translate(-50%, -50%) scale(1.08);
+}
+
+.dsidebar-toggle:focus-visible {
+  outline: 2px solid #f0b429;
+  outline-offset: 2px;
+}
+
+.dlayout--pinned .dsidebar-toggle {
+  left: var(--rail-expanded);
+}
+
+/* ── Navegación ──────────────────────────────────────── */
+.dsidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-top: 0.5rem;
+}
+
+.dsidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  width: 100%;
+  padding: 0.7rem;
+  border: none;
+  border-radius: 0.65rem;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.78);
+  font-family: var(--font-body, "Nunito", sans-serif);
+  font-size: 0.98rem;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.dsidebar-link:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+}
+
+.dsidebar-link:focus-visible {
+  outline: 2px solid #f0b429;
+  outline-offset: 2px;
+}
+
+.dsidebar-link.active {
+  background: rgba(240, 180, 41, 0.14);
+  color: #fff;
+}
+
+.dsidebar-link.active .dsidebar-ico {
+  color: #ffd166;
+}
+
+.dsidebar-ico {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  flex-shrink: 0;
+  font-size: 1.05rem;
+  color: #f0b429;
+}
+
+.dsidebar-label {
+  opacity: 0;
+  transition: opacity 0.18s ease;
+}
+
+.dlayout--pinned .dsidebar-label {
+  opacity: 1;
+}
+
+/* ── Pie del sidebar (usuario + logout) ──────────────── */
+.dsidebar-bottom {
+  margin-top: auto;
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.dsidebar-user {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.6rem 0.7rem;
+}
+
+.dsidebar-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: #161009;
+  background: linear-gradient(135deg, #f0b429, #ffd97a);
+}
+
+.dsidebar-username {
+  font-weight: 700;
+  color: #fff;
+}
+
+.dsidebar-logout {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.dsidebar-logout:hover {
+  color: #fff;
+}
+
+/* ── Área de contenido ───────────────────────────────── */
+.dlayout-main {
+  margin-left: var(--rail);
+  min-height: 100vh;
+  transition: margin-left 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dlayout--pinned .dlayout-main {
+  margin-left: var(--rail-expanded);
+}
+
+/* Botón hamburguesa y backdrop: solo móvil */
+.dlayout-mobile-toggle {
+  display: none;
+}
+
+.dsidebar-backdrop {
+  display: none;
+}
+
+/* ── Móvil: el sidebar pasa a drawer deslizable ──────── */
+@media (max-width: 768px) {
+  .dlayout-mobile-toggle {
+    position: fixed;
+    top: 0.85rem;
+    left: 0.85rem;
+    z-index: 1001;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 0.6rem;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(10, 10, 10, 0.9);
+    color: #fff;
+    font-size: 1.2rem;
+    cursor: pointer;
+  }
+
+  .dsidebar {
+    width: var(--rail-expanded);
+    transform: translateX(-100%);
+    transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* En el drawer las etiquetas siempre se ven; no aplica fijar/contraer. */
+  .dsidebar .dsidebar-label {
+    opacity: 1;
+  }
+
+  .dsidebar-toggle {
+    display: none;
+  }
+
+  .dsidebar--mobile-open {
+    transform: translateX(0);
+  }
+
+  .dlayout-main,
+  .dlayout--pinned .dlayout-main {
+    margin-left: 0;
+    padding-top: 3.25rem;
+  }
+
+  .dsidebar-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+  }
+
+  .dsidebar-backdrop.active {
+    display: block;
+    opacity: 1;
+    pointer-events: auto;
+  }
+}

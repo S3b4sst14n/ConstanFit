@@ -1,0 +1,92 @@
+/* ───────────────────────────────────────────────────────────
+   ConstanFit · Design tokens
+   Punto único de verdad para tipografía, color, espacio y
+   elevación. Importar en main.jsx ANTES que index.css.
+   ─────────────────────────────────────────────────────────── */
+
+/* Fuentes — Satoshi (display) vía Fontshare + Inter (texto) */
+@import url('https://api.fontshare.com/v2/css?f[]=satoshi@700,800,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  /* ── Tipografía ── */
+  --font-display: 'Satoshi', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+
+  --fs-display: clamp(2.75rem, 6vw, 4.5rem);
+  --fs-h1: clamp(2rem, 4vw, 3rem);
+  --fs-h2: clamp(1.5rem, 2.5vw, 2rem);
+  --fs-h3: 1.25rem;
+  --fs-lg: 1.125rem;
+  --fs-body: 1rem;
+  --fs-sm: 0.875rem;
+  --fs-xs: 0.75rem;
+
+  /* ── Neutrales grafito (no negro puro) ── */
+  --bg-0: #0a0a0b;
+  --bg-1: #121214;
+  --bg-2: #1a1a1d;
+  --line: rgba(255, 255, 255, 0.08);
+  --line-strong: rgba(255, 255, 255, 0.14);
+
+  /* ── Marca: dorado ── */
+  --gold: #f0b429;
+  --gold-bright: #ffd166;
+  --gold-deep: #c8881a;
+  --gold-glow: rgba(240, 180, 41, 0.22);
+
+  /* ── Texto ── */
+  --text-1: #f5f5f4;
+  --text-2: rgba(245, 245, 244, 0.66);
+  --text-3: rgba(245, 245, 244, 0.42);
+
+  /* ── Semántico ── */
+  --success: #4ade80;
+
+  /* ── Espaciado (escala 4px) ── */
+  --sp-1: 0.25rem;  --sp-2: 0.5rem;  --sp-3: 0.75rem; --sp-4: 1rem;
+  --sp-6: 1.5rem;   --sp-8: 2rem;    --sp-12: 3rem;
+  --sp-16: 4rem;    --sp-24: 6rem;
+
+  /* ── Radios ── */
+  --r-sm: 0.5rem; --r-md: 0.875rem; --r-lg: 1.25rem; --r-xl: 1.75rem; --r-full: 999px;
+
+  /* ── Elevación (sombras direccionales) ── */
+  --sh-1: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --sh-2: 0 4px 12px rgba(0, 0, 0, 0.35);
+  --sh-3: 0 12px 32px rgba(0, 0, 0, 0.45);
+  --sh-4: 0 24px 64px rgba(0, 0, 0, 0.55);
+  --sh-gold: 0 8px 32px var(--gold-glow);
+
+  /* ── Gradientes ── */
+  --grad-gold: linear-gradient(135deg, var(--gold-bright), var(--gold-deep));
+  --grad-surface: linear-gradient(160deg, var(--bg-2), var(--bg-1));
+
+  /* ── Animación ── */
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  color: var(--text-1);
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "cv11", "ss01";
+}
+
+h1, h2, h3, .font-display {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+  line-height: 1.08;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

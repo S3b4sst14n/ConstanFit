@@ -11,18 +11,19 @@
 }
 
 body {
-  background-image: url('./assets/images/Background.png');
   width: 100%;
   min-height: 100vh;
-  padding-top: 107px; 
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  padding-top: 107px;
+  /* Profundidad por capas: un halo dorado cálido arriba-derecha
+     y un eco tenue abajo-izquierda sobre grafito. */
+  background-color: var(--bg-0);
+  background-image:
+    radial-gradient(60rem 60rem at 78% -12%, rgba(240, 180, 41, 0.10), transparent 60%),
+    radial-gradient(48rem 48rem at -8% 108%, rgba(240, 180, 41, 0.05), transparent 55%);
   background-attachment: fixed;
-  
+  background-repeat: no-repeat;
 }
 
 .overlay {
-  background: rgba(0, 0, 0, 0.288);
-
+  background: transparent;
 }
