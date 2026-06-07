@@ -1,0 +1,128 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  // Provider sqlite porque Turso es libSQL (fork de SQLite).
+  // La conexión real a Turso se hace por el driver adapter en src/lib/prisma.js.
+  // DATABASE_URL solo lo usa el CLI de Prisma (generate/studio); en runtime se ignora.
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Role {
+  id          Int       @id @default(autoincrement())
+  nombre      String
+  descripcion String?
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  deletedAt   DateTime? @map("deleted_at")
+
+  usuarios Usuario[]
+
+  @@map("roles")
+}
+
+model Usuario {
+  id           Int       @id @default(autoincrement())
+  username     String    @unique
+  email        String    @unique
+  passwordHash String    @map("password_hash")
+  rolId        Int       @map("rol_id")
+  activo       Boolean   @default(true)
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+  deletedAt    DateTime? @map("deleted_at")
+
+  rol Role @relation(fields: [rolId], references: [id])
+
+  @@map("usuarios")
+}
+
+model Plan {
+  id           Int       @id @default(autoincrement())
+  nombre       String
+  precio       Float
+  duracionDias Int       @map("duracion_dias")
+  descripcion  String?
+  activo       Boolean   @default(true)
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+  deletedAt    DateTime? @map("deleted_at")
+
+  suscripciones Suscripcion[]
+
+  @@map("planes")
+}
+
+model Cliente {
+  id                   Int       @id @default(autoincrement())
+  nombre               String
+  apellido             String
+  email                String?   @unique
+  identificationNumber String?   @unique @map("identification_number")
+  fechaNacimiento      DateTime  @map("fecha_nacimiento")
+  celular              String?
+  estado               String    @default("activo")
+  notas                String?
+  createdAt            DateTime  @default(now()) @map("created_at")
+  updatedAt            DateTime  @updatedAt @map("updated_at")
+  deletedAt            DateTime? @map("deleted_at")
+
+  suscripciones Suscripcion[]
+  pagos         Pago[]
+  asistencias   Asistencia[]
+
+  @@map("clientes")
+}
+
+model Suscripcion {
+  id        Int       @id @default(autoincrement())
+  clientId  Int       @map("client_id")
+  planId    Int       @map("plan_id")
+  estado    String    @default("activa")
+  startDate DateTime  @map("start_date")
+  endDate   DateTime  @map("end_date")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  cliente Cliente @relation(fields: [clientId], references: [id])
+  plan    Plan    @relation(fields: [planId], references: [id])
+  pagos   Pago[]
+
+  @@map("suscripciones")
+}
+
+model Pago {
+  id            Int       @id @default(autoincrement())
+  clientId      Int       @map("client_id")
+  suscripcionId Int       @map("suscripcion_id")
+  monto         Float
+  metodoPago    String    @map("metodo_pago")
+  estado        String    @default("completado")
+  notas         String?
+  fechaPago     DateTime  @default(now()) @map("fecha_pago")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+  deletedAt     DateTime? @map("deleted_at")
+
+  cliente     Cliente     @relation(fields: [clientId], references: [id])
+  suscripcion Suscripcion @relation(fields: [suscripcionId], references: [id])
+
+  @@map("pagos")
+}
+
+model Asistencia {
+  id        Int       @id @default(autoincrement())
+  clientId  Int       @map("client_id")
+  fecha     DateTime
+  notas     String?
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  cliente Cliente @relation(fields: [clientId], references: [id])
+
+  @@map("asistencias")
+}

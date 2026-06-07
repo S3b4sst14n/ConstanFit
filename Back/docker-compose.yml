@@ -1,0 +1,21 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: constanfit-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: constanfit
+      POSTGRES_PASSWORD: constanfit
+      POSTGRES_DB: constanfit
+    ports:
+      - "5432:5432"
+    volumes:
+      - constanfit-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U constanfit -d constanfit"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  constanfit-pgdata:
