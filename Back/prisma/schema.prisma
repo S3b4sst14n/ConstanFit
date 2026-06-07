@@ -114,15 +114,59 @@ model Pago {
 }
 
 model Asistencia {
-  id        Int       @id @default(autoincrement())
-  clientId  Int       @map("client_id")
-  fecha     DateTime
-  notas     String?
-  createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime  @updatedAt @map("updated_at")
-  deletedAt DateTime? @map("deleted_at")
+  id            Int       @id @default(autoincrement())
+  clientId      Int       @map("client_id")
+  // La base real tiene esta FK a `clases_grupales` (función fuera de este repo);
+  // la modelamos como escalar nullable para no arrastrar ese modelo.
+  claseGrupalId Int?      @map("clase_grupal_id")
+  fecha         DateTime
+  checkIn       DateTime  @map("check_in")
+  checkOut      DateTime? @map("check_out")
+  notas         String?
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+  deletedAt     DateTime? @map("deleted_at")
 
   cliente Cliente @relation(fields: [clientId], references: [id])
 
   @@map("asistencias")
+}
+
+// Catálogo de la tienda del gym (ropa, snacks, preentreno, agua, etc.).
+// `categoria` es un string validado por Zod (ropa | snacks | preentreno | agua | otro).
+model Producto {
+  id          Int       @id @default(autoincrement())
+  nombre      String
+  categoria   String    @default("otro")
+  precio      Float
+  stock       Int       @default(0)
+  descripcion String?
+  activo      Boolean   @default(true)
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  deletedAt   DateTime? @map("deleted_at")
+
+  ventas Venta[]
+
+  @@map("productos")
+}
+
+// Venta de un producto. `precioUnitario` es una foto del precio al momento de
+// vender (si el producto sube de precio luego, la venta histórica no cambia).
+model Venta {
+  id             Int       @id @default(autoincrement())
+  productId      Int       @map("product_id")
+  cantidad       Int       @default(1)
+  precioUnitario Float     @map("precio_unitario")
+  total          Float
+  metodoPago     String    @map("metodo_pago")
+  notas          String?
+  fecha          DateTime  @default(now())
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @updatedAt @map("updated_at")
+  deletedAt      DateTime? @map("deleted_at")
+
+  producto Producto @relation(fields: [productId], references: [id])
+
+  @@map("ventas")
 }

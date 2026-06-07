@@ -87,12 +87,47 @@ CREATE TABLE "pagos" (
 CREATE TABLE "asistencias" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "client_id" INTEGER NOT NULL,
+    -- clase_grupal_id existe en la base real con FK a "clases_grupales"; aquí lo
+    -- dejamos como columna nullable sin la FK porque esa tabla/feature no vive en este repo.
+    "clase_grupal_id" INTEGER,
     "fecha" DATETIME NOT NULL,
+    "check_in" DATETIME NOT NULL,
+    "check_out" DATETIME,
     "notas" TEXT,
     "created_at" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" DATETIME NOT NULL,
     "deleted_at" DATETIME,
     CONSTRAINT "asistencias_client_id_fkey" FOREIGN KEY ("client_id") REFERENCES "clientes" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+);
+
+-- CreateTable
+CREATE TABLE "productos" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "nombre" TEXT NOT NULL,
+    "categoria" TEXT NOT NULL DEFAULT 'otro',
+    "precio" REAL NOT NULL,
+    "stock" INTEGER NOT NULL DEFAULT 0,
+    "descripcion" TEXT,
+    "activo" BOOLEAN NOT NULL DEFAULT true,
+    "created_at" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" DATETIME NOT NULL,
+    "deleted_at" DATETIME
+);
+
+-- CreateTable
+CREATE TABLE "ventas" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "product_id" INTEGER NOT NULL,
+    "cantidad" INTEGER NOT NULL DEFAULT 1,
+    "precio_unitario" REAL NOT NULL,
+    "total" REAL NOT NULL,
+    "metodo_pago" TEXT NOT NULL,
+    "notas" TEXT,
+    "fecha" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "created_at" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" DATETIME NOT NULL,
+    "deleted_at" DATETIME,
+    CONSTRAINT "ventas_product_id_fkey" FOREIGN KEY ("product_id") REFERENCES "productos" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 -- CreateIndex

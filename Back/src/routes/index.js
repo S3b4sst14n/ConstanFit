@@ -6,6 +6,8 @@ import suscripcionesRoutes from "./suscripciones.routes.js";
 import pagosRoutes from "./pagos.routes.js";
 import asistenciasRoutes from "./asistencias.routes.js";
 import dashboardRoutes from "./dashboard.routes.js";
+import productosRoutes from "./productos.routes.js";
+import ventasRoutes from "./ventas.routes.js";
 
 const router = Router();
 
@@ -17,5 +19,7 @@ router.use("/clientes", clientesRoutes);
 router.use("/suscripciones", suscripcionesRoutes);
 router.use("/pagos", pagosRoutes);
 router.use("/asistencias", asistenciasRoutes);
+router.use("/productos", productosRoutes);
+router.use("/ventas", ventasRoutes);
 
 export default router;

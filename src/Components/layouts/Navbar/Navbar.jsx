@@ -11,14 +11,15 @@ import {
   faPersonRunning,
   faRightToBracket,
   faRightFromBracket,
-  faGaugeHigh,
   faBars,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 
-const links = [
-  { to: "/",        label: "Inicio",            icon: faHome },
-  { to: "/Planes",  label: "Planes",            icon: faDumbbell },
+// Solo enlaces del sitio público. La navegación de administración (Panel,
+// Asistencias) vive en el sidebar del panel, no en este navbar.
+const publicLinks = [
+  { to: "/",        label: "Inicio",             icon: faHome, end: true },
+  { to: "/Planes",  label: "Planes",             icon: faDumbbell },
   { to: "/Acerca",  label: "Acerca de nosotros", icon: faPersonRunning },
 ];
 
@@ -32,7 +33,13 @@ const Navbar = () => {
 
   const closeMenu = () => setMenuOpen(false);
 
-  const isStaff = ["ADMIN", "STAFF"].includes(user?.role);
+  const renderLink = ({ to, label, icon, end }) => (
+    <li key={to}>
+      <NavLink to={to} end={end} onClick={closeMenu}>
+        <FontAwesomeIcon icon={icon} aria-hidden /> {label}
+      </NavLink>
+    </li>
+  );
 
   const handleLogout = () => {
     closeMenu();
@@ -93,20 +100,8 @@ const Navbar = () => {
           aria-label="Principal"
         >
           <ul className="nav-links">
-            {links.map(({ to, label, icon }) => (
-              <li key={to}>
-                <NavLink to={to} end={to === "/"} onClick={closeMenu}>
-                  <FontAwesomeIcon icon={icon} aria-hidden /> {label}
-                </NavLink>
-              </li>
-            ))}
-            {isStaff && (
-              <li>
-                <NavLink to="/Dashboard" onClick={closeMenu}>
-                  <FontAwesomeIcon icon={faGaugeHigh} aria-hidden /> Panel
-                </NavLink>
-              </li>
-            )}
+            {publicLinks.map(renderLink)}
+
             <li className="nav-cta">
               {user ? (
                 <button type="button" onClick={handleLogout} className="nav-cta-link nav-cta-btn">

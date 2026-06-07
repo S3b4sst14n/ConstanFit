@@ -352,11 +352,12 @@ const Asistencias = () => {
   const toggleSort = (key) =>
     setSort((s) => (s.key === key ? { key, dir: s.dir === 'asc' ? 'desc' : 'asc' } : { key, dir: 'asc' }));
 
-  const openModal = () => {
-    setForm(emptyForm());
-    setFormError(null);
-    setModalOpen(true);
-  };
+  // Deshabilitado junto con el botón "Registrar Asistencia".
+  // const openModal = () => {
+  //   setForm(emptyForm());
+  //   setFormError(null);
+  //   setModalOpen(true);
+  // };
 
   const setCliField = (name) => (e) => setClienteForm((f) => ({ ...f, [name]: e.target.value }));
 
@@ -587,9 +588,11 @@ const Asistencias = () => {
               <UserPlus size={16} strokeWidth={2} aria-hidden />
               Agregar cliente
             </button>
+            {/* Botón "Registrar Asistencia" deshabilitado a pedido.
             <button type="button" className="ga-btn ga-btn--primary" onClick={openModal}>
               Registrar Asistencia
             </button>
+            */}
           </div>
         </div>
         {/* ───────── Selector de vista ───────── */}

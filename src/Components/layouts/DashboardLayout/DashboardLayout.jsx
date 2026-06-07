@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faGaugeHigh,
   faCalendarCheck,
+  faCashRegister,
   faHouse,
   faDumbbell,
   faPersonRunning,
@@ -16,12 +17,23 @@ import { useAuth } from "../../../context/auth-context";
 import logo from "../../../assets/images/Logo.png";
 import "./DashboardLayout.css";
 
-const navItems = [
-  { to: "/Dashboard", label: "Panel", icon: faGaugeHigh, end: true },
-  { to: "/Dashboard/Asistencias", label: "Asistencias", icon: faCalendarCheck },
-  { to: "/", label: "Inicio", icon: faHouse, end: true },
-  { to: "/Planes", label: "Planes", icon: faDumbbell },
-  { to: "/Acerca", label: "Acerca", icon: faPersonRunning },
+const navGroups = [
+  {
+    label: "Administración",
+    items: [
+      { to: "/Dashboard", label: "Panel", icon: faGaugeHigh, end: true },
+      { to: "/Dashboard/Asistencias", label: "Asistencias", icon: faCalendarCheck },
+      { to: "/Dashboard/Ingresos", label: "Ingresos", icon: faCashRegister },
+    ],
+  },
+  {
+    label: "Sitio",
+    items: [
+      { to: "/", label: "Inicio", icon: faHouse, end: true },
+      { to: "/Planes", label: "Planes", icon: faDumbbell },
+      { to: "/Acerca", label: "Acerca", icon: faPersonRunning },
+    ],
+  },
 ];
 
 const DashboardLayout = () => {
@@ -65,19 +77,24 @@ const DashboardLayout = () => {
         </div>
 
         <nav className="dsidebar-nav">
-          {navItems.map(({ to, label, icon, end }) => (
-            <NavLink
-              key={to}
-              to={to}
-              end={end}
-              className="dsidebar-link"
-              onClick={closeMobile}
-            >
-              <span className="dsidebar-ico">
-                <FontAwesomeIcon icon={icon} aria-hidden />
-              </span>
-              <span className="dsidebar-label">{label}</span>
-            </NavLink>
+          {navGroups.map((group) => (
+            <div className="dsidebar-group" key={group.label}>
+              <span className="dsidebar-group-label" aria-hidden>{group.label}</span>
+              {group.items.map(({ to, label, icon, end }) => (
+                <NavLink
+                  key={to}
+                  to={to}
+                  end={end}
+                  className="dsidebar-link"
+                  onClick={closeMobile}
+                >
+                  <span className="dsidebar-ico">
+                    <FontAwesomeIcon icon={icon} aria-hidden />
+                  </span>
+                  <span className="dsidebar-label">{label}</span>
+                </NavLink>
+              ))}
+            </div>
           ))}
         </nav>
 

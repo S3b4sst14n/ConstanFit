@@ -48,6 +48,8 @@ const FALLBACK_PLANS = [
   { id: 'fallback-mensual',   nombre: 'Plan Mensual',   precio: 60000, duracionDias: 30, descripcion: 'Entrena todo el mes sin límites' },
 ];
 
+// Precios en pesos colombianos (COP). El sufijo se añade solo al precio
+// principal de la tarjeta (ver `toCards`), no al costo por día.
 const formatPrice = (n) => `$${Number(n).toLocaleString('es-CO')}`;
 
 // Convierte la lista de planes del backend en tarjetas. El plan de mayor
@@ -75,7 +77,7 @@ const toCards = (plans) => {
       icon: <Icon size={40} />,
       buttonText,
       title: plan.nombre,
-      price: formatPrice(plan.precio),
+      price: `${formatPrice(plan.precio)} COP`,
       period,
       perDay,
       perks,

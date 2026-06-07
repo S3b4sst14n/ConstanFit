@@ -10,6 +10,7 @@
     "prisma:generate": "prisma generate",
     "db:pull": "prisma db pull",
     "prisma:studio": "prisma studio",
+    "db:tienda": "node prisma/migrate-tienda.js",
     "db:seed": "node prisma/seed.js"
   },
   "dependencies": {

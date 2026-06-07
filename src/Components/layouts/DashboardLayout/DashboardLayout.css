@@ -111,6 +111,42 @@ body.no-nav-offset {
   margin-top: 0.5rem;
 }
 
+/* Grupos de enlaces (Administración / Sitio) */
+.dsidebar-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+/* Separador entre grupos: visible siempre, también con el riel contraído. */
+.dsidebar-group + .dsidebar-group {
+  margin-top: 0.4rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Título de sección: oculto en el riel contraído, aparece al expandir. */
+.dsidebar-group-label {
+  height: 0;
+  margin: 0;
+  padding: 0 0.7rem;
+  overflow: hidden;
+  opacity: 0;
+  white-space: nowrap;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4);
+  transition: opacity 0.18s ease;
+}
+
+.dlayout--pinned .dsidebar-group-label {
+  height: auto;
+  margin: 0.15rem 0;
+  opacity: 1;
+}
+
 .dsidebar-link {
   display: flex;
   align-items: center;
@@ -256,6 +292,12 @@ body.no-nav-offset {
 
   /* En el drawer las etiquetas siempre se ven; no aplica fijar/contraer. */
   .dsidebar .dsidebar-label {
+    opacity: 1;
+  }
+
+  .dsidebar .dsidebar-group-label {
+    height: auto;
+    margin: 0.15rem 0;
     opacity: 1;
   }
 

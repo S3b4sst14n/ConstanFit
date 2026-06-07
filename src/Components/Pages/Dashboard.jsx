@@ -1,14 +1,16 @@
 // Pages/Dashboard.jsx — vista de administración (ADMIN / STAFF)
 import { useEffect, useMemo, useState } from 'react';
-import { Download, Pencil, X } from 'lucide-react';
+import { Download, Pencil, Trophy, X } from 'lucide-react';
 import { api } from '../../lib/api';
 import { useAuth } from '../../context/auth-context';
 import './Dashboard.css';
 
 const PLAN_TONE = { Mensual: 'green', Quincenal: 'amber', Diario: 'pink' };
 
+// Pesos colombianos (COP). Se añade el sufijo "COP" para que el "$" no se
+// confunda con dólares.
 const formatCurrency = (n) =>
-  `$${Number(n).toLocaleString('es-CO')}`;
+  `$${Number(n).toLocaleString('es-CO')} COP`;
 
 const initials = (nombre, apellido) =>
   `${nombre?.[0] ?? ''}${apellido?.[0] ?? ''}`.toUpperCase();
@@ -110,12 +112,22 @@ const Dashboard = () => {
       { key: 'clientes',    label: 'Clientes activos',      value: m.clientesActivos,      hint: 'Total vigente' },
       { key: 'asistencias', label: 'Asistencias del mes',   value: m.asistenciasMes,       hint: 'Mes en curso' },
       { key: 'suscrip',     label: 'Suscripciones activas', value: m.suscripcionesActivas, hint: 'Planes vigentes' },
-      { key: 'ingresos',    label: 'Ingresos del mes',      value: m.ingresosMes != null ? formatCurrency(m.ingresosMes) : null, hint: 'Mes en curso' },
+      { key: 'ingresos',    label: 'Ingresos del mes',      value: m.ingresosMes != null ? formatCurrency(m.ingresosMes) : null, hint: 'Por planes vigentes' },
     ];
   }, [data]);
 
   const clientes = data?.clientes ?? [];
   const sinClientes = clientes.length === 0;
+
+  // Cliente con más asistencias en el mes en curso. En caso de empate se queda
+  // el primero (los clientes vienen ordenados por nombre desde la API).
+  const topCliente = useMemo(() => {
+    const list = data?.clientes ?? [];
+    return list.reduce(
+      (mejor, c) => ((c.asistencias ?? 0) > (mejor?.asistencias ?? 0) ? c : mejor),
+      null,
+    );
+  }, [data]);
 
   const subtitle =
     status === 'loading' ? '· cargando…'
@@ -209,6 +221,27 @@ const Dashboard = () => {
           </article>
         ))}
       </section>
+
+      {status === 'ready' && topCliente && topCliente.asistencias > 0 && (
+        <section className="dash-top" aria-label="Cliente más constante del mes">
+          <span className="dash-top-badge" aria-hidden>
+            <Trophy size={22} strokeWidth={2.2} />
+          </span>
+          <div className="dash-top-main">
+            <span className="dash-top-overline">Cliente más constante del mes</span>
+            <span className="dash-top-name">
+              <span className="client-avatar" aria-hidden>
+                {initials(topCliente.nombre, topCliente.apellido)}
+              </span>
+              {topCliente.nombre} {topCliente.apellido}
+            </span>
+          </div>
+          <div className="dash-top-count">
+            <span className="dash-top-count-value">{topCliente.asistencias}</span>
+            <span className="dash-top-count-label">asistencias</span>
+          </div>
+        </section>
+      )}
 
       <section className="dash-panel" aria-label="Clientes">
         <div className="dash-panel-bar">

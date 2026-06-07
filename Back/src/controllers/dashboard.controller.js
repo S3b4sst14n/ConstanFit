@@ -12,12 +12,17 @@ function shortPlanLabel(nombre) {
   return nombre.replace(/^plan\s+/i, "").trim() || nombre;
 }
 
+// Una suscripción está vigente si está activa y hoy cae dentro de su periodo.
+function esVigente(sub, now) {
+  return (
+    !!sub && sub.estado === "activa" && sub.startDate <= now && sub.endDate >= now
+  );
+}
+
 // De las suscripciones de un cliente (ya ordenadas por endDate desc) elige
 // la que está vigente hoy; si ninguna lo está, cae a la más reciente.
 function pickSubscription(suscripciones, now) {
-  const vigente = suscripciones.find(
-    (s) => s.estado === "activa" && s.startDate <= now && s.endDate >= now,
-  );
+  const vigente = suscripciones.find((s) => esVigente(s, now));
   return vigente ?? suscripciones[0] ?? null;
 }
 
@@ -52,7 +57,6 @@ export async function overview(_req, res) {
     clientesActivos,
     asistenciasMes,
     suscripcionesActivas,
-    ingresosAgg,
     clientes,
     asistenciasPorCliente,
   ] = await Promise.all([
@@ -62,10 +66,6 @@ export async function overview(_req, res) {
     }),
     prisma.suscripcion.count({
       where: { deletedAt: null, estado: "activa", endDate: { gte: now } },
-    }),
-    prisma.pago.aggregate({
-      _sum: { monto: true },
-      where: { deletedAt: null, estado: "completado", fechaPago: { gte: monthStart } },
     }),
     prisma.cliente.findMany({
       where: { deletedAt: null },
@@ -89,8 +89,13 @@ export async function overview(_req, res) {
     asistenciasPorCliente.map((a) => [a.clientId, a._count._all]),
   );
 
+  // Ingresos del mes = suma del precio del plan de cada cliente con una
+  // suscripción vigente hoy (no se basa en la tabla de pagos).
+  let ingresosMes = 0;
+
   const filas = clientes.map((c) => {
     const sub = pickSubscription(c.suscripciones, now);
+    if (esVigente(sub, now)) ingresosMes += sub.plan?.precio ?? 0;
     return {
       id: c.id,
       nombre: c.nombre,
@@ -106,7 +111,7 @@ export async function overview(_req, res) {
       clientesActivos,
       asistenciasMes,
       suscripcionesActivas,
-      ingresosMes: ingresosAgg._sum.monto ?? 0,
+      ingresosMes,
     },
     clientes: filas,
   });

@@ -60,4 +60,15 @@ export const api = {
     list: () => request("/suscripciones", { auth: true }),
     create: (data) => request("/suscripciones", { method: "POST", body: data, auth: true }),
   },
+  productos: {
+    list: () => request("/productos", { auth: true }),
+    create: (data) => request("/productos", { method: "POST", body: data, auth: true }),
+    update: (id, data) => request(`/productos/${id}`, { method: "PUT", body: data, auth: true }),
+    remove: (id) => request(`/productos/${id}`, { method: "DELETE", auth: true }),
+  },
+  ventas: {
+    list: () => request("/ventas", { auth: true }),
+    create: (data) => request("/ventas", { method: "POST", body: data, auth: true }),
+    remove: (id) => request(`/ventas/${id}`, { method: "DELETE", auth: true }),
+  },
 };

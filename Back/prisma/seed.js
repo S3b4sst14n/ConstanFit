@@ -23,6 +23,16 @@ const clientesDemo = [
   { nombre: "Valentina", apellido: "González",  planDuracion: 30, asistenciasMes: 10, diasIniciado: 9  },
 ];
 
+// Productos de ejemplo para la vista de Ingresos (tienda del gym).
+const productosDemo = [
+  { nombre: "Camiseta ConstanFit",   categoria: "ropa",       precio: 45000, stock: 20 },
+  { nombre: "Leggins deportivos",    categoria: "ropa",       precio: 60000, stock: 12 },
+  { nombre: "Barra proteica",        categoria: "snacks",     precio: 6000,  stock: 40 },
+  { nombre: "Preentreno (porción)",  categoria: "preentreno", precio: 8000,  stock: 30 },
+  { nombre: "Agua 600ml",            categoria: "agua",       precio: 3000,  stock: 60 },
+  { nombre: "Bebida hidratante",     categoria: "agua",       precio: 5000,  stock: 25 },
+];
+
 // upsert manual por "nombre" (las tablas no tienen índice único en ese campo).
 async function upsertBy(model, field, value, data) {
   const existing = await model.findFirst({ where: { [field]: value } });
@@ -81,10 +91,11 @@ async function seedClientes(planByDuracion) {
     });
 
     // Asistencias distribuidas en los últimos días (1 por día, este mes).
-    const asistencias = Array.from({ length: c.asistenciasMes }, (_, i) => ({
-      clientId: cliente.id,
-      fecha: daysAgo(i),
-    }));
+    // check_in es NOT NULL en la base real: usamos la misma fecha.
+    const asistencias = Array.from({ length: c.asistenciasMes }, (_, i) => {
+      const f = daysAgo(i);
+      return { clientId: cliente.id, fecha: f, checkIn: f };
+    });
     await prisma.asistencia.createMany({ data: asistencias });
   }
 }
@@ -118,8 +129,12 @@ async function main() {
 
   await seedClientes(planByDuracion);
 
+  for (const p of productosDemo) {
+    await upsertBy(prisma.producto, "nombre", p.nombre, p);
+  }
+
   console.log(
-    "Seed listo: 3 roles + usuario admin (admin / admin123) + 3 planes + clientes demo",
+    "Seed listo: 3 roles + usuario admin (admin / admin123) + 3 planes + clientes demo + productos demo",
   );
 }
 
