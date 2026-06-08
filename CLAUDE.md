@@ -46,7 +46,7 @@ Note: [Back/docker-compose.yml](Back/docker-compose.yml) still defines a Postgre
 
 ### Backend
 
-Express app composed in [Back/src/app.js](Back/src/app.js) (`createApp()`), listened on by [Back/src/server.js](Back/src/server.js) (which also handles graceful shutdown). All routes mount under `/api` ([Back/src/routes/index.js](Back/src/routes/index.js)): `health`, `auth`, `dashboard`, `plans`, `clientes`, `suscripciones`, `pagos`, `asistencias`, `productos`, `ventas`.
+Express app composed in [Back/src/app.js](Back/src/app.js) (`createApp()`), listened on by [Back/src/server.js](Back/src/server.js) (which also handles graceful shutdown). All routes mount under `/api` ([Back/src/routes/index.js](Back/src/routes/index.js)): `health`, `auth`, `dashboard`, `plans`, `clientes`, `suscripciones`, `pagos`, `asistencias`, `productos`, `ventas`, `usuarios`. `usuarios` is the only resource guarded **ADMIN-only** (`requireRole("ADMIN")`); the rest use ADMIN+STAFF.
 
 Layering convention — keep it:
 
@@ -70,11 +70,11 @@ Layering convention — keep it:
 Single-page app driven by `react-router-dom` v7. The route tree is centralized in [src/App.jsx](src/App.jsx) and uses **two layout routes**:
 
 - `<PublicLayout/>` ([layouts/PublicLayout.jsx](src/Components/layouts/PublicLayout.jsx)) wraps `/`, `/Planes`, `/Acerca`, `/Login` — renders `<Navbar/>`, the page inside a `.overlay` div, `<Footer/>`, and a floating `<WhatsAppButton/>`.
-- `<DashboardLayout/>` ([layouts/DashboardLayout/](src/Components/layouts/DashboardLayout/)) wraps the admin panel (`/Dashboard` index + `/Dashboard/Asistencias` + `/Dashboard/Ingresos`) — a collapsible sidebar (links grouped into "Administración" / "Sitio" sections), no top nav. It's gated by `<RequireRole roles={['ADMIN','STAFF']}>` ([routing/RequireRole.jsx](src/Components/routing/RequireRole.jsx)), which renders nothing while auth is resolving, redirects to `/Login` when logged out, and to `/` when the role isn't allowed.
+- `<DashboardLayout/>` ([layouts/DashboardLayout/](src/Components/layouts/DashboardLayout/)) wraps the admin panel (`/Dashboard` index + `/Dashboard/Asistencias` + `/Dashboard/Ingresos` + `/Dashboard/Usuarios`) — a collapsible sidebar (links grouped into "Administración" / "Sitio" sections), no top nav. It's gated by `<RequireRole roles={['ADMIN','STAFF']}>` ([routing/RequireRole.jsx](src/Components/routing/RequireRole.jsx)), which renders nothing while auth is resolving, redirects to `/Login` when logged out, and to `/` when the role isn't allowed. `/Dashboard/Usuarios` is **further** wrapped in `<RequireRole roles={['ADMIN']}>` (STAFF can't reach it), and its sidebar link is hidden for non-admins via an `adminOnly` flag on the nav item.
 
 Network + auth state live in thin layers:
 
-- [src/lib/api.js](src/lib/api.js) — a `fetch` wrapper reading `VITE_API_URL` (default `http://localhost:4000/api`), managing a JWT in `localStorage` under `constanfit_token` via `tokenStorage`, throwing `ApiError` on non-2xx. Calls that need auth pass `{ auth: true }` to attach the Bearer token. Exposes `api.auth.*`, `api.plans.*`, `api.dashboard.*`, `api.clientes.*`, `api.suscripciones.*`, `api.asistencias.*`, `api.productos.*`, `api.ventas.*`.
+- [src/lib/api.js](src/lib/api.js) — a `fetch` wrapper reading `VITE_API_URL` (default `http://localhost:4000/api`), managing a JWT in `localStorage` under `constanfit_token` via `tokenStorage`, throwing `ApiError` on non-2xx. Calls that need auth pass `{ auth: true }` to attach the Bearer token. Exposes `api.auth.*`, `api.plans.*`, `api.dashboard.*`, `api.clientes.*`, `api.suscripciones.*`, `api.asistencias.*`, `api.productos.*`, `api.ventas.*`, `api.usuarios.*`.
 - Auth context is **split across two files** to satisfy the react-refresh lint rule (a file exporting a component shouldn't also export non-components): [context/auth-context.js](src/context/auth-context.js) holds the `AuthContext` object + the `useAuth()` hook, while [context/AuthContext.jsx](src/context/AuthContext.jsx) holds the `<AuthProvider>` component (wrapped around the app in [main.jsx](src/main.jsx)). On boot it calls `/auth/me` if a token exists. Keep this split when touching context.
 
 Pages that read from the API should degrade gracefully when the backend is down — see `FALLBACK_PLANS` in [src/Components/Planes/PlanSection.jsx](src/Components/Planes/PlanSection.jsx): render hardcoded data first, replace from API in `useEffect`.
@@ -82,7 +82,7 @@ Pages that read from the API should degrade gracefully when the backend is down 
 Component organization under [src/Components/](src/Components/):
 
 - `Home/` (landing, composes `Hero/`) and `Hero/` (split into `HeroContent`, `HeroImage`, `CTAButton`, `Benefit`, `SocialIcons`).
-- `Pages/` — route-level screens (`Planes`, `Acerca`, `Login`, `Dashboard`, `Asistencias`, `Ingresos`), siblings of `Home/`.
+- `Pages/` — route-level screens (`Planes`, `Acerca`, `Login`, `Dashboard`, `Asistencias`, `Ingresos`, `Usuarios`), siblings of `Home/`.
 - `Planes/` — reusable plan UI (`PlanCard`, `PlanSection`, `PlanIcons`).
 - `layouts/` — `PublicLayout`, `DashboardLayout/`, `Navbar/`, `Footer/`.
 - `routing/` — `RequireRole`. `WhatsAppButton/` — floating contact button.

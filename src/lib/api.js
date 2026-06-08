@@ -71,4 +71,11 @@ export const api = {
     create: (data) => request("/ventas", { method: "POST", body: data, auth: true }),
     remove: (id) => request(`/ventas/${id}`, { method: "DELETE", auth: true }),
   },
+  usuarios: {
+    list: () => request("/usuarios", { auth: true }),
+    roles: () => request("/usuarios/roles", { auth: true }),
+    create: (data) => request("/usuarios", { method: "POST", body: data, auth: true }),
+    update: (id, data) => request(`/usuarios/${id}`, { method: "PUT", body: data, auth: true }),
+    remove: (id) => request(`/usuarios/${id}`, { method: "DELETE", auth: true }),
+  },
 };

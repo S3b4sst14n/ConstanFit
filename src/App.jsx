@@ -6,6 +6,7 @@ import Login from './Components/Pages/Login'
 import Dashboard from './Components/Pages/Dashboard'
 import Asistencias from './Components/Pages/Asistencias'
 import Ingresos from './Components/Pages/Ingresos'
+import Usuarios from './Components/Pages/Usuarios'
 import RequireRole from './Components/routing/RequireRole'
 import PublicLayout from './Components/layouts/PublicLayout'
 import DashboardLayout from './Components/layouts/DashboardLayout/DashboardLayout'
@@ -34,6 +35,15 @@ function App() {
           <Route index element={<Dashboard/>}/>
           <Route path='Asistencias' element={<Asistencias/>}/>
           <Route path='Ingresos' element={<Ingresos/>}/>
+          {/* Gestión de usuarios: solo ADMIN (doble guard sobre el layout) */}
+          <Route
+            path='Usuarios'
+            element={
+              <RequireRole roles={['ADMIN']}>
+                <Usuarios/>
+              </RequireRole>
+            }
+          />
         </Route>
       </Routes>
     </Router>

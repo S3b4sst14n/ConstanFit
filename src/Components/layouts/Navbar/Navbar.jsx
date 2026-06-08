@@ -102,6 +102,7 @@ const Navbar = () => {
           <ul className="nav-links">
             {publicLinks.map(renderLink)}
 
+            {/* Botón de iniciar/cerrar sesión ocultado */}
             <li className="nav-cta">
               {user ? (
                 <button type="button" onClick={handleLogout} className="nav-cta-link nav-cta-btn">
@@ -112,7 +113,7 @@ const Navbar = () => {
                   <FontAwesomeIcon icon={faRightToBracket} aria-hidden /> Iniciar sesión
                 </NavLink>
               )}
-            </li>
+            </li> 
           </ul>
         </nav>
       </header>

@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faGaugeHigh,
   faCalendarCheck,
   faCashRegister,
+  faUsersGear,
   faHouse,
   faDumbbell,
   faPersonRunning,
@@ -14,6 +15,7 @@ import {
   faAnglesRight,
 } from "@fortawesome/free-solid-svg-icons";
 import { useAuth } from "../../../context/auth-context";
+import PageTransition from "../../routing/PageTransition";
 import logo from "../../../assets/images/Logo.png";
 import "./DashboardLayout.css";
 
@@ -24,6 +26,7 @@ const navGroups = [
       { to: "/Dashboard", label: "Panel", icon: faGaugeHigh, end: true },
       { to: "/Dashboard/Asistencias", label: "Asistencias", icon: faCalendarCheck },
       { to: "/Dashboard/Ingresos", label: "Ingresos", icon: faCashRegister },
+      { to: "/Dashboard/Usuarios", label: "Usuarios", icon: faUsersGear, adminOnly: true },
     ],
   },
   {
@@ -41,6 +44,8 @@ const DashboardLayout = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+
+  const isAdmin = user?.role === "ADMIN";
 
   // El panel no tiene el header superior, así que quitamos su offset del body.
   useEffect(() => {
@@ -77,10 +82,14 @@ const DashboardLayout = () => {
         </div>
 
         <nav className="dsidebar-nav">
-          {navGroups.map((group) => (
+          {navGroups.map((group) => {
+            // Los ítems marcados adminOnly solo aparecen para ADMIN.
+            const items = group.items.filter((it) => !it.adminOnly || isAdmin);
+            if (items.length === 0) return null;
+            return (
             <div className="dsidebar-group" key={group.label}>
               <span className="dsidebar-group-label" aria-hidden>{group.label}</span>
-              {group.items.map(({ to, label, icon, end }) => (
+              {items.map(({ to, label, icon, end }) => (
                 <NavLink
                   key={to}
                   to={to}
@@ -95,7 +104,8 @@ const DashboardLayout = () => {
                 </NavLink>
               ))}
             </div>
-          ))}
+            );
+          })}
         </nav>
 
         <div className="dsidebar-bottom">
@@ -133,7 +143,7 @@ const DashboardLayout = () => {
       />
 
       <main className="dlayout-main">
-        <Outlet />
+        <PageTransition />
       </main>
     </div>
   );
