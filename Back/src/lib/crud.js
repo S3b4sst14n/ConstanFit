@@ -1,5 +1,6 @@
 import { prisma } from "./prisma.js";
 import { HttpError } from "./httpError.js";
+import { parsePagination, buildPaginationMeta } from "./pagination.js";
 
 /**
  * Genera un controlador CRUD estándar para un modelo de Prisma.
@@ -36,9 +37,26 @@ export function crudController(modelName, opts = {}) {
   return {
     findOr404,
 
-    list: async (_req, res) => {
-      const items = await model.findMany({ where: baseWhere, include, orderBy });
-      res.json({ items });
+    list: async (req, res) => {
+      const pagination = parsePagination(req.query);
+
+      // Sin ?page/?limit: comportamiento previo (devuelve todo).
+      if (!pagination) {
+        const items = await model.findMany({ where: baseWhere, include, orderBy });
+        return res.json({ items });
+      }
+
+      const [items, total] = await prisma.$transaction([
+        model.findMany({
+          where: baseWhere,
+          include,
+          orderBy,
+          skip: pagination.skip,
+          take: pagination.take,
+        }),
+        model.count({ where: baseWhere }),
+      ]);
+      res.json({ items, pagination: buildPaginationMeta(pagination, total, items.length) });
     },
 
     get: async (req, res) => {

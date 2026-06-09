@@ -2,6 +2,7 @@ import { z } from "zod";
 import bcrypt from "bcryptjs";
 import { prisma } from "../lib/prisma.js";
 import { HttpError } from "../lib/httpError.js";
+import { parsePagination, buildPaginationMeta } from "../lib/pagination.js";
 
 // Nunca exponer el passwordHash al cliente.
 const publicUser = (u) => ({
@@ -53,15 +54,36 @@ const ROLES_OCULTOS_POR_ROL = {
 
 export async function list(req, res) {
   const ocultos = ROLES_OCULTOS_POR_ROL[req.user.role] ?? [];
-  const items = await prisma.usuario.findMany({
-    where: {
-      deletedAt: null,
-      ...(ocultos.length ? { rol: { nombre: { notIn: ocultos } } } : {}),
-    },
-    include: { rol: true },
-    orderBy: { username: "asc" },
+  const where = {
+    deletedAt: null,
+    ...(ocultos.length ? { rol: { nombre: { notIn: ocultos } } } : {}),
+  };
+  const pagination = parsePagination(req.query);
+
+  // Sin ?page/?limit: comportamiento previo (devuelve todos).
+  if (!pagination) {
+    const items = await prisma.usuario.findMany({
+      where,
+      include: { rol: true },
+      orderBy: { username: "asc" },
+    });
+    return res.json({ items: items.map(publicUser) });
+  }
+
+  const [items, total] = await prisma.$transaction([
+    prisma.usuario.findMany({
+      where,
+      include: { rol: true },
+      orderBy: { username: "asc" },
+      skip: pagination.skip,
+      take: pagination.take,
+    }),
+    prisma.usuario.count({ where }),
+  ]);
+  res.json({
+    items: items.map(publicUser),
+    pagination: buildPaginationMeta(pagination, total, items.length),
   });
-  res.json({ items: items.map(publicUser) });
 }
 
 // Catálogo de roles para poblar el selector del formulario.
@@ -108,6 +130,13 @@ export async function update(req, res) {
 
   const data = updateSchema.parse(req.body);
   const esYoMismo = Number(req.user.id) === id;
+
+  // Solo el ADMIN controla si una cuenta puede iniciar sesión (campo `activo`).
+  // El DUEÑO (OWNER) puede editar el resto de datos, pero no activar/desactivar
+  // cuentas. El servidor es la fuente de verdad de esto.
+  if (data.activo !== undefined && req.user.role !== "ADMIN") {
+    throw new HttpError(403, "Solo un administrador puede activar o desactivar cuentas");
+  }
 
   // Evitar que el admin se bloquee a sí mismo.
   if (esYoMismo && data.activo === false) {
