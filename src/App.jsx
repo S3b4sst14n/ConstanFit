@@ -27,7 +27,7 @@ function App() {
         <Route
           path='/Dashboard'
           element={
-            <RequireRole roles={['ADMIN', 'STAFF']}>
+            <RequireRole roles={['ADMIN', 'OWNER', 'STAFF']}>
               <DashboardLayout/>
             </RequireRole>
           }
@@ -35,11 +35,11 @@ function App() {
           <Route index element={<Dashboard/>}/>
           <Route path='Asistencias' element={<Asistencias/>}/>
           <Route path='Ingresos' element={<Ingresos/>}/>
-          {/* Gestión de usuarios: solo ADMIN (doble guard sobre el layout) */}
+          {/* Gestión de usuarios: ADMIN y DUEÑO (doble guard sobre el layout) */}
           <Route
             path='Usuarios'
             element={
-              <RequireRole roles={['ADMIN']}>
+              <RequireRole roles={['ADMIN', 'OWNER']}>
                 <Usuarios/>
               </RequireRole>
             }

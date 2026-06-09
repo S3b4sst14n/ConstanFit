@@ -186,6 +186,7 @@
 .usr-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
 .usr-badge--gold    { color: #ffd166; background: rgba(240, 180, 41, 0.15); border-color: rgba(240, 180, 41, 0.4); }
 .usr-badge--blue    { color: #7dd3fc; background: rgba(56, 189, 248, 0.13); border-color: rgba(56, 189, 248, 0.28); }
+.usr-badge--green   { color: #6ee7a0; background: rgba(110, 231, 160, 0.13); border-color: rgba(110, 231, 160, 0.3); }
 .usr-badge--neutral { color: var(--text-2); background: var(--surface-3); border-color: var(--border); }
 
 .usr-state { font-size: 0.82rem; font-weight: 600; }

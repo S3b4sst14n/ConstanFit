@@ -29,6 +29,21 @@ const updateSchema = z.object({
   activo: z.boolean().optional(),
 });
 
+// Alcance de gestión según el rol del solicitante: ADMIN gestiona a todos;
+// DUEÑO (OWNER) solo puede crear/editar/eliminar cuentas STAFF y CLIENT, nunca
+// cuentas ADMIN ni otras OWNER. El servidor es la fuente de verdad de esto.
+const GESTIONABLES_POR_ROL = {
+  ADMIN: null, // null = sin restricción
+  OWNER: new Set(["STAFF", "CLIENT"]),
+};
+
+function puedeGestionarRol(solicitante, rolObjetivo) {
+  const permitidos = GESTIONABLES_POR_ROL[solicitante];
+  if (permitidos === null) return true; // ADMIN
+  if (!permitidos) return false; // rol del solicitante no contemplado
+  return permitidos.has(rolObjetivo);
+}
+
 export async function list(_req, res) {
   const items = await prisma.usuario.findMany({
     where: { deletedAt: null },
@@ -53,6 +68,9 @@ export async function create(req, res) {
 
   const role = await prisma.role.findFirst({ where: { id: data.rolId, deletedAt: null } });
   if (!role) throw new HttpError(400, "Rol no válido");
+  if (!puedeGestionarRol(req.user.role, role.nombre)) {
+    throw new HttpError(403, "No puedes crear cuentas de ese rol");
+  }
 
   const passwordHash = await bcrypt.hash(data.password, 10);
   const user = await prisma.usuario.create({
@@ -71,6 +89,11 @@ export async function update(req, res) {
     include: { rol: true },
   });
   if (!existing) throw new HttpError(404, "Usuario no encontrado");
+
+  // El DUEÑO no puede editar cuentas ADMIN ni otras OWNER.
+  if (!puedeGestionarRol(req.user.role, existing.rol?.nombre)) {
+    throw new HttpError(403, "No puedes editar esta cuenta");
+  }
 
   const data = updateSchema.parse(req.body);
   const esYoMismo = Number(req.user.id) === id;
@@ -92,6 +115,10 @@ export async function update(req, res) {
     if (esYoMismo && role.nombre !== "ADMIN") {
       throw new HttpError(400, "No puedes quitarte a ti mismo el rol de administrador");
     }
+    // El DUEÑO tampoco puede ascender a alguien a ADMIN/OWNER.
+    if (!puedeGestionarRol(req.user.role, role.nombre)) {
+      throw new HttpError(403, "No puedes asignar ese rol");
+    }
     patch.rolId = data.rolId;
   }
 
@@ -104,8 +131,16 @@ export async function remove(req, res) {
   if (!Number.isInteger(id)) throw new HttpError(400, "ID inválido");
   if (Number(req.user.id) === id) throw new HttpError(400, "No puedes eliminar tu propia cuenta");
 
-  const existing = await prisma.usuario.findFirst({ where: { id, deletedAt: null } });
+  const existing = await prisma.usuario.findFirst({
+    where: { id, deletedAt: null },
+    include: { rol: true },
+  });
   if (!existing) throw new HttpError(404, "Usuario no encontrado");
+
+  // El DUEÑO no puede eliminar cuentas ADMIN ni otras OWNER.
+  if (!puedeGestionarRol(req.user.role, existing.rol?.nombre)) {
+    throw new HttpError(403, "No puedes eliminar esta cuenta");
+  }
 
   // Soft delete + desactivar (login comprueba `activo`, así no podrá entrar).
   await prisma.usuario.update({

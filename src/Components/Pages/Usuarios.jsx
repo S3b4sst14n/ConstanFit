@@ -5,8 +5,19 @@ import { api } from '../../lib/api';
 import { useAuth } from '../../context/auth-context';
 import './Usuarios.css';
 
-const ROLE_TONE = { ADMIN: 'gold', STAFF: 'blue', CLIENT: 'neutral' };
-const ROLE_LABEL = { ADMIN: 'Administrador', STAFF: 'Personal', CLIENT: 'Cliente' };
+const ROLE_TONE = { ADMIN: 'gold', OWNER: 'green', STAFF: 'blue', CLIENT: 'neutral' };
+const ROLE_LABEL = { ADMIN: 'Administrador', OWNER: 'Dueño', STAFF: 'Personal', CLIENT: 'Cliente' };
+
+// Alcance de gestión según el rol del usuario logueado (espejo del backend):
+// ADMIN gestiona a todos; DUEÑO (OWNER) solo cuentas STAFF/CLIENT. La fuente de
+// verdad es el servidor; esto solo evita ofrecer acciones que serían rechazadas.
+const ROLES_GESTIONABLES = { ADMIN: null, OWNER: ['STAFF', 'CLIENT'] };
+const puedeGestionarRol = (miRol, rolObjetivo) => {
+  const permitidos = ROLES_GESTIONABLES[miRol];
+  if (permitidos === null) return true; // ADMIN
+  if (!permitidos) return false;
+  return permitidos.includes(rolObjetivo);
+};
 
 const initials = (name) => (name?.[0] ?? 'U').toUpperCase();
 
@@ -206,6 +217,8 @@ const Usuarios = () => {
 
           {status === 'ready' && usuarios.map((u) => {
             const esYo = Number(me?.id) === Number(u.id);
+            // El DUEÑO no puede tocar cuentas ADMIN/OWNER (espejo del guard del servidor).
+            const gestionable = puedeGestionarRol(me?.role, u.rol);
             return (
               <div className="usr-row" role="row" key={u.id}>
                 <span role="cell" className="usr-cell-user">
@@ -227,15 +240,22 @@ const Usuarios = () => {
                   </span>
                 </span>
                 <span role="cell" className="ta-right usr-actions">
-                  <button type="button" className="usr-icon-btn" onClick={() => openEditar(u)} aria-label={`Editar ${u.username}`}>
+                  <button
+                    type="button"
+                    className="usr-icon-btn"
+                    onClick={() => openEditar(u)}
+                    disabled={!gestionable}
+                    title={gestionable ? 'Editar' : 'No tienes permiso para editar esta cuenta'}
+                    aria-label={`Editar ${u.username}`}
+                  >
                     <Pencil size={15} strokeWidth={2.2} aria-hidden />
                   </button>
                   <button
                     type="button"
                     className="usr-icon-btn usr-icon-btn--danger"
                     onClick={() => handleEliminar(u)}
-                    disabled={esYo}
-                    title={esYo ? 'No puedes eliminar tu propia cuenta' : 'Eliminar'}
+                    disabled={esYo || !gestionable}
+                    title={esYo ? 'No puedes eliminar tu propia cuenta' : gestionable ? 'Eliminar' : 'No tienes permiso para eliminar esta cuenta'}
                     aria-label={`Eliminar ${u.username}`}
                   >
                     <Trash2 size={15} strokeWidth={2.2} aria-hidden />
@@ -272,9 +292,11 @@ const Usuarios = () => {
                 <span className="usr-field-label">Rol *</span>
                 <select className="usr-input" value={form.rolId} onChange={setField('rolId')} required>
                   <option value="">Selecciona un rol</option>
-                  {roles.map((r) => (
-                    <option key={r.id} value={r.id}>{ROLE_LABEL[r.nombre] ?? r.nombre}</option>
-                  ))}
+                  {roles
+                    .filter((r) => puedeGestionarRol(me?.role, r.nombre))
+                    .map((r) => (
+                      <option key={r.id} value={r.id}>{ROLE_LABEL[r.nombre] ?? r.nombre}</option>
+                    ))}
                 </select>
               </label>
 

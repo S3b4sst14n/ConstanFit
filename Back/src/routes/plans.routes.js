@@ -9,8 +9,8 @@ const router = Router();
 router.get("/", asyncHandler(plansController.list));
 router.get("/:id", asyncHandler(plansController.get));
 
-// Escritura solo ADMIN
-const admin = [requireAuth, requireRole("ADMIN")];
+// Escritura: ADMIN y DUEÑO (gestionan los planes del gym)
+const admin = [requireAuth, requireRole("ADMIN", "OWNER")];
 router.post("/", ...admin, asyncHandler(plansController.create));
 router.put("/:id", ...admin, asyncHandler(plansController.update));
 router.delete("/:id", ...admin, asyncHandler(plansController.remove));

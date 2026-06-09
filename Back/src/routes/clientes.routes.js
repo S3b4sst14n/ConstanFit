@@ -4,7 +4,7 @@ import { requireAuth, requireRole } from "../middleware/auth.js";
 import { asyncHandler } from "../lib/asyncHandler.js";
 
 const router = Router();
-const staff = [requireAuth, requireRole("ADMIN", "STAFF")];
+const staff = [requireAuth, requireRole("ADMIN", "OWNER", "STAFF")];
 
 router.get("/", ...staff, asyncHandler(ctrl.list));
 router.get("/:id", ...staff, asyncHandler(ctrl.get));

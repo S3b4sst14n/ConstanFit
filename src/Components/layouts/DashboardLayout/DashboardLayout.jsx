@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -19,25 +19,40 @@ import PageTransition from "../../routing/PageTransition";
 import logo from "../../../assets/images/Logo.png";
 import "./DashboardLayout.css";
 
-const navGroups = [
-  {
-    label: "Administración",
-    items: [
-      { to: "/Dashboard", label: "Panel", icon: faGaugeHigh, end: true },
-      { to: "/Dashboard/Asistencias", label: "Asistencias", icon: faCalendarCheck },
-      { to: "/Dashboard/Ingresos", label: "Ingresos", icon: faCashRegister },
-      { to: "/Dashboard/Usuarios", label: "Usuarios", icon: faUsersGear, adminOnly: true },
-    ],
-  },
-  {
-    label: "Sitio",
-    items: [
-      { to: "/", label: "Inicio", icon: faHouse, end: true },
-      { to: "/Planes", label: "Planes", icon: faDumbbell },
-      { to: "/Acerca", label: "Acerca", icon: faPersonRunning },
-    ],
-  },
-];
+// Ítems del grupo "Administración" indexados por clave reutilizable.
+const ADMIN_ITEMS = {
+  panel: { to: "/Dashboard", label: "Panel", icon: faGaugeHigh, end: true },
+  ingresos: { to: "/Dashboard/Ingresos", label: "Ingresos", icon: faCashRegister },
+  asistencias: { to: "/Dashboard/Asistencias", label: "Asistencias", icon: faCalendarCheck },
+  usuarios: { to: "/Dashboard/Usuarios", label: "Usuarios", icon: faUsersGear },
+};
+
+// Orden (y visibilidad) del grupo "Administración" según el rol de quien entra:
+// · ADMIN / OWNER (revisión + gestión): Panel → Ingresos → Asistencias → Usuarios.
+// · STAFF (instructor, registra): Asistencias → Ingresos → Panel (sin Usuarios).
+const ADMIN_ORDER_BY_ROLE = {
+  ADMIN: ["panel", "ingresos", "asistencias", "usuarios"],
+  OWNER: ["panel", "ingresos", "asistencias", "usuarios"],
+  STAFF: ["asistencias", "ingresos", "panel"],
+};
+
+// Enlaces al sitio público: iguales para todos los roles.
+const SITIO_GROUP = {
+  label: "Sitio",
+  items: [
+    { to: "/", label: "Inicio", icon: faHouse, end: true },
+    { to: "/Planes", label: "Planes", icon: faDumbbell },
+    { to: "/Acerca", label: "Acerca", icon: faPersonRunning },
+  ],
+};
+
+function buildNavGroups(role) {
+  const order = ADMIN_ORDER_BY_ROLE[role] ?? ADMIN_ORDER_BY_ROLE.STAFF;
+  return [
+    { label: "Administración", items: order.map((key) => ADMIN_ITEMS[key]) },
+    SITIO_GROUP,
+  ];
+}
 
 const DashboardLayout = () => {
   const [pinned, setPinned] = useState(false); // expandido fijo (clic)
@@ -45,7 +60,8 @@ const DashboardLayout = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
-  const isAdmin = user?.role === "ADMIN";
+  // El orden y los ítems del menú dependen del rol (ver ADMIN_ORDER_BY_ROLE).
+  const navGroups = useMemo(() => buildNavGroups(user?.role), [user?.role]);
 
   // El panel no tiene el header superior, así que quitamos su offset del body.
   useEffect(() => {
@@ -83,13 +99,11 @@ const DashboardLayout = () => {
 
         <nav className="dsidebar-nav">
           {navGroups.map((group) => {
-            // Los ítems marcados adminOnly solo aparecen para ADMIN.
-            const items = group.items.filter((it) => !it.adminOnly || isAdmin);
-            if (items.length === 0) return null;
+            if (group.items.length === 0) return null;
             return (
             <div className="dsidebar-group" key={group.label}>
               <span className="dsidebar-group-label" aria-hidden>{group.label}</span>
-              {items.map(({ to, label, icon, end }) => (
+              {group.items.map(({ to, label, icon, end }) => (
                 <NavLink
                   key={to}
                   to={to}

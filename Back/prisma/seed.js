@@ -3,8 +3,16 @@ import { prisma } from "../src/lib/prisma.js";
 
 const roles = [
   { nombre: "ADMIN", descripcion: "Acceso total al sistema" },
+  { nombre: "OWNER", descripcion: "Dueño del gimnasio" },
   { nombre: "STAFF", descripcion: "Personal del gimnasio" },
   { nombre: "CLIENT", descripcion: "Cliente / miembro" },
+];
+
+// Usuarios internos de ejemplo (además del admin) para probar las tres vistas
+// del panel. Idempotentes: solo se crean si no existe ese username o email.
+const usuariosDemo = [
+  { username: "dueno", email: "dueno@constanfit.local", password: "dueno123", rol: "OWNER" },
+  { username: "instructor", email: "instructor@constanfit.local", password: "instructor123", rol: "STAFF" },
 ];
 
 const planes = [
@@ -127,6 +135,23 @@ async function main() {
     });
   }
 
+  // Usuarios demo (dueño / instructor). Idempotente: no recrear si ya existe
+  // ese username O ese email.
+  for (const u of usuariosDemo) {
+    const existing = await prisma.usuario.findFirst({
+      where: { OR: [{ username: u.username }, { email: u.email }] },
+    });
+    if (existing) continue;
+    await prisma.usuario.create({
+      data: {
+        username: u.username,
+        email: u.email,
+        passwordHash: await bcrypt.hash(u.password, 10),
+        rolId: roleByName[u.rol].id,
+      },
+    });
+  }
+
   await seedClientes(planByDuracion);
 
   for (const p of productosDemo) {
@@ -134,7 +159,7 @@ async function main() {
   }
 
   console.log(
-    "Seed listo: 3 roles + usuario admin (admin / admin123) + 3 planes + clientes demo + productos demo",
+    "Seed listo: 4 roles + usuarios admin/dueno/instructor (admin123 / dueno123 / instructor123) + 3 planes + clientes demo + productos demo",
   );
 }
 

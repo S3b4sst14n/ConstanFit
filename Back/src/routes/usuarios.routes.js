@@ -4,8 +4,9 @@ import { requireAuth, requireRole } from "../middleware/auth.js";
 import { asyncHandler } from "../lib/asyncHandler.js";
 
 const router = Router();
-// Gestión de usuarios: solo ADMIN (no STAFF).
-const admin = [requireAuth, requireRole("ADMIN")];
+// Gestión de usuarios: ADMIN y DUEÑO (no STAFF). El alcance del DUEÑO
+// (solo STAFF/CLIENT) se acota en el controlador.
+const admin = [requireAuth, requireRole("ADMIN", "OWNER")];
 
 router.get("/", ...admin, asyncHandler(ctrl.list));
 router.get("/roles", ...admin, asyncHandler(ctrl.roles));
