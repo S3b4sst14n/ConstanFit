@@ -1,6 +1,6 @@
 // Pages/Ingresos.jsx — tienda del gym: catálogo + inventario + ventas (ADMIN/STAFF)
 import { useEffect, useMemo, useState } from 'react';
-import { Plus, Pencil, Trash2, X, ShoppingCart, AlertTriangle } from 'lucide-react';
+import { Plus, Minus, Pencil, Trash2, X, ShoppingCart, AlertTriangle } from 'lucide-react';
 import { api } from '../../lib/api';
 import './Ingresos.css';
 
@@ -126,6 +126,14 @@ const Ingresos = () => {
 
   /* ── Registrar venta ── */
   const setVentaField = (name) => (e) => setVenta((f) => ({ ...f, [name]: e.target.value }));
+
+  // +/- del campo Cantidad: nunca baja de 1 y no supera el stock disponible.
+  const stepCantidad = (delta) =>
+    setVenta((f) => {
+      let next = Math.max(1, (Number(f.cantidad) || 0) + delta);
+      if (productoSel && productoSel.stock > 0) next = Math.min(next, productoSel.stock);
+      return { ...f, cantidad: String(next) };
+    });
 
   const handleVenta = async (e) => {
     e.preventDefault();
@@ -292,13 +300,28 @@ const Ingresos = () => {
             </select>
           </label>
 
-          <label className="ing-field ing-field--sm">
+          {/* Cantidad con botones +/- y validación de mínimo 1 y máximo stock disponible */}
+          <div className="ing-field ing-field--qty">
             <span className="ing-field-label">Cantidad *</span>
-            <input
-              type="number" min="1" max={productoSel?.stock ?? undefined}
-              className="ing-input" value={venta.cantidad} onChange={setVentaField('cantidad')}
-            />
-          </label>
+            <div className="ing-stepper">
+              <button
+                type="button" className="ing-stepper-btn" onClick={() => stepCantidad(-1)}
+                disabled={cantidadNum <= 1} aria-label="Disminuir cantidad"
+              >
+                <Minus size={16} strokeWidth={2.6} aria-hidden />
+              </button>
+              <input
+                type="number" min="1" max={productoSel?.stock ?? undefined}
+                className="ing-input ing-stepper-input" value={venta.cantidad} onChange={setVentaField('cantidad')}
+              />
+              <button
+                type="button" className="ing-stepper-btn" onClick={() => stepCantidad(1)}
+                disabled={!!productoSel && cantidadNum >= productoSel.stock} aria-label="Aumentar cantidad"
+              >
+                <Plus size={16} strokeWidth={2.6} aria-hidden />
+              </button>
+            </div>
+          </div>
 
           <label className="ing-field">
             <span className="ing-field-label">Método de pago</span>

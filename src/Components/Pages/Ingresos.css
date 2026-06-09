@@ -154,7 +154,50 @@
 .ing-field { display: flex; flex-direction: column; gap: 0.4rem; min-width: 140px; }
 .ing-field--grow { flex: 1 1 240px; }
 .ing-field--sm { min-width: 90px; max-width: 120px; }
+.ing-field--qty { min-width: 150px; max-width: 168px; }
 .ing-field-label { font-size: 0.78rem; font-weight: 600; color: var(--text-2); }
+
+/* Stepper de cantidad: − a la izquierda, número centrado, + a la derecha.
+   Van pegados como un solo control (sin gap, bordes fusionados). */
+.ing-stepper {
+  display: flex;
+  align-items: stretch;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  overflow: hidden;
+}
+.ing-stepper:focus-within { border-color: var(--primary); box-shadow: 0 0 0 3px var(--ring); }
+.ing-stepper-btn {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  border: none;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  transition: background 0.16s ease, color 0.16s ease;
+}
+.ing-stepper-btn:hover:not(:disabled) { background: var(--surface-3); }
+.ing-stepper-btn:focus-visible { outline: none; background: var(--surface-3); }
+.ing-stepper-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.ing-stepper-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  text-align: center;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  padding-left: 0.4rem;
+  padding-right: 0.4rem;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+.ing-stepper-input:focus-visible { outline: none; box-shadow: none; }
+.ing-stepper-input::-webkit-outer-spin-button,
+.ing-stepper-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 
 .ing-input {
   width: 100%;
@@ -360,7 +403,7 @@
   }
   .ing-sale .ing-field { min-width: 0; }
   .ing-field--grow { grid-column: 1 / -1; }   /* Producto a ancho completo */
-  .ing-field--sm { max-width: none; }
+  .ing-field--sm, .ing-field--qty { max-width: none; }
   .ing-sale-total { width: auto; padding: 0; align-self: end; }
   .ing-sale-submit { grid-column: 1 / -1; width: 100%; }
 }

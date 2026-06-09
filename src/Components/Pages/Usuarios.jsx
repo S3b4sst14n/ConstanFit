@@ -122,8 +122,10 @@ const Usuarios = () => {
           username: form.username.trim(),
           email: form.email.trim(),
           rolId: Number(form.rolId),
-          activo: form.activo,
         };
+        // Solo el ADMIN controla si la cuenta puede iniciar sesión (campo `activo`).
+        // El DUEÑO no envía este campo (el servidor lo rechazaría con 403).
+        if (me?.role === 'ADMIN') payload.activo = form.activo;
         if (form.password) payload.password = form.password;
         await api.usuarios.update(editing.id, payload);
       } else {
@@ -317,7 +319,8 @@ const Usuarios = () => {
                 />
               </label>
 
-              {editing && (
+              {/* Solo el ADMIN puede marcar si una cuenta inicia sesión o no. */}
+              {editing && me?.role === 'ADMIN' && (
                 <label className="usr-check">
                   <input
                     type="checkbox"
