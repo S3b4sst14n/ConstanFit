@@ -689,7 +689,27 @@
 }
 
 @media (max-width: 520px) {
-  .ga-stats { grid-template-columns: 1fr; }
+  /* Menos margen lateral = más ancho útil para la rejilla. */
+  .ga { padding: 1.1rem 0.9rem; }
+
+  /* 3 métricas: 2 arriba + 1 a ancho completo abajo (en vez de apilarse). */
+  .ga-stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.7rem;
+  }
+  .ga-stats > :last-child { grid-column: 1 / -1; }
+  .ga-stat {
+    padding: 1rem 1.05rem;
+    gap: 0.25rem;
+    border-radius: 14px;
+  }
+  .ga-stat-label {
+    font-size: 0.64rem;
+    letter-spacing: 0.045em;
+  }
+  .ga-stat-value { font-size: clamp(1.35rem, 5.6vw, 1.85rem); }
+  .ga-stat-hint { font-size: 0.7rem; }
+
   .ga-header-actions { flex-direction: column; align-items: stretch; }
   .ga-btn--primary { width: 100%; }
   .ga-toast { left: 1rem; right: 1rem; max-width: none; }

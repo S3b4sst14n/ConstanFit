@@ -499,11 +499,55 @@
 }
 
 @media (max-width: 620px) {
-  .dash-metrics { grid-template-columns: 1fr; }
+  /* Menos margen lateral del panel = más ancho útil para la rejilla 2×2. */
+  .dash { padding: 1.1rem 0.9rem; }
 
-  .dash-top { flex-wrap: wrap; gap: 0.85rem; }
-  .dash-top-count { margin-left: 0; align-items: flex-start; }
-  .dash-top-name { font-size: 1.1rem; }
+  /* Las métricas se mantienen en 2×2 (no se apilan), como en el diseño. */
+  .dash-metrics {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.7rem;
+  }
+  .dash-stat {
+    padding: 1rem 1.05rem;
+    gap: 0.25rem;
+    border-radius: 14px;
+  }
+  .dash-stat-label {
+    font-size: 0.64rem;
+    letter-spacing: 0.045em;
+  }
+  /* Escala con el ancho para que "155.000 COP" quepa en una línea
+     en la mayoría de teléfonos y degrade con elegancia en los muy estrechos. */
+  .dash-stat-value { font-size: clamp(1.35rem, 5.6vw, 1.85rem); }
+  .dash-stat-hint { font-size: 0.7rem; }
+
+  /* Cliente más constante: trofeo + nombre arriba, y el conteo como fila
+     inferior a ancho completo con un divisor (en vez del "1" gigante suelto). */
+  .dash-top {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-areas:
+      "badge main"
+      "count count";
+    align-items: center;
+    gap: 0.5rem 0.95rem;
+    padding: 1.05rem 1.15rem;
+  }
+  .dash-top-badge { grid-area: badge; width: 42px; height: 42px; }
+  .dash-top-main { grid-area: main; }
+  .dash-top-name { font-size: 1.08rem; }
+  .dash-top-count {
+    grid-area: count;
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: flex-end;
+    gap: 0.4rem;
+    margin: 0.15rem 0 0;
+    padding-top: 0.7rem;
+    border-top: 1px solid rgba(240, 180, 41, 0.22);
+  }
+  .dash-top-count-value { font-size: 1.55rem; }
+  .dash-top-count-label { margin-top: 0; }
 
   .dash-row {
     grid-template-columns: 1.6fr 0.8fr 1fr;

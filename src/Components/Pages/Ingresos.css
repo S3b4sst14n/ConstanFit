@@ -350,11 +350,40 @@
   .ing-metrics { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 720px) {
-  .ing-sale-total { width: 100%; padding: 0; }
-  .ing-sale-submit { width: 100%; }
+  /* En móvil el formulario de venta pasa a una rejilla de 2 columnas para que
+     "Fecha" y "Total" queden en la misma fila (el orden del DOM ya lo permite:
+     Producto · Cantidad · Método · Fecha · Total · Botón). */
+  .ing-sale {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: end;
+  }
+  .ing-sale .ing-field { min-width: 0; }
+  .ing-field--grow { grid-column: 1 / -1; }   /* Producto a ancho completo */
+  .ing-field--sm { max-width: none; }
+  .ing-sale-total { width: auto; padding: 0; align-self: end; }
+  .ing-sale-submit { grid-column: 1 / -1; width: 100%; }
 }
 @media (max-width: 620px) {
-  .ing-metrics { grid-template-columns: 1fr; }
+  /* Menos margen lateral = más ancho útil para la rejilla. */
+  .ing { padding: 1.1rem 0.9rem; }
+
+  /* Las métricas se mantienen en 2×2 (no se apilan), como en el panel. */
+  .ing-metrics {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.7rem;
+  }
+  .ing-stat {
+    padding: 1rem 1.05rem;
+    gap: 0.25rem;
+    border-radius: 14px;
+  }
+  .ing-stat-label {
+    font-size: 0.64rem;
+    letter-spacing: 0.045em;
+  }
+  .ing-stat-value { font-size: clamp(1.3rem, 5.4vw, 1.8rem); }
+  .ing-stat-hint { font-size: 0.7rem; }
 
   /* Tablas compactas: ocultar columnas secundarias */
   .ing-row--prod { grid-template-columns: 1.6fr 1fr 0.7fr; gap: 0.6rem; }

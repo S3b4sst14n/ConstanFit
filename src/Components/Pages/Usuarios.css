@@ -275,10 +275,24 @@
 
 /* Responsive */
 @media (max-width: 760px) {
-  .usr-metrics { grid-template-columns: 1fr; }
+  /* 3 métricas: 2 arriba + 1 a ancho completo abajo (en vez de apilarse). */
+  .usr-metrics { grid-template-columns: repeat(2, 1fr); gap: 0.7rem; }
+  .usr-metrics > :last-child { grid-column: 1 / -1; }
   .usr-row { grid-template-columns: 1.4fr 1fr 0.8fr; gap: 0.6rem; }
   .usr-row > :nth-child(2),
   .usr-row > :nth-child(4) { display: none; }
+}
+
+@media (max-width: 520px) {
+  /* En teléfono: menos margen lateral y cards compactas. */
+  .usr { padding: 1.1rem 0.9rem; }
+  .usr-stat {
+    padding: 1rem 1.05rem;
+    gap: 0.25rem;
+    border-radius: 14px;
+  }
+  .usr-stat-label { font-size: 0.64rem; letter-spacing: 0.045em; }
+  .usr-stat-value { font-size: clamp(1.35rem, 5.6vw, 1.85rem); }
 }
 
 @media (prefers-reduced-motion: reduce) {
