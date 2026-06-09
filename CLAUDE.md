@@ -32,7 +32,7 @@ They are independent npm projects: the frontend runs from the repo root, the bac
 
 There is **no migration workflow** (`prisma migrate` is not wired up). The schema is applied to Turso by running [Back/prisma/init-turso.sql](Back/prisma/init-turso.sql) against the database; `schema.prisma` is then kept in sync via `db:pull`. If you change the data model, update **both** `init-turso.sql` and `schema.prisma`, and to apply the change to an already-deployed DB write an idempotent apply script as in [Back/prisma/migrate-tienda.js](Back/prisma/migrate-tienda.js) (the pattern used for the `productos`/`ventas` tables) and run it against each environment's Turso.
 
-There is no test runner configured on either side. Do not invent one or claim tests exist.
+The **backend** has a test runner: **Vitest** ([Back/vitest.config.js](Back/vitest.config.js), Node environment, picks up `src/**/*.test.js`). Run with `npm test` (one-shot) or `npm run test:watch` from inside [Back/](Back/). The dedicated config exists so Vitest does **not** climb to the frontend's `vite.config.js` and load the React plugin. Tests are colocated next to the unit under test (e.g. [Back/src/lib/pagination.test.js](Back/src/lib/pagination.test.js)); favor pure units that don't need a live DB. The **frontend** still has no test runner — don't claim it does.
 
 ### Database setup
 
