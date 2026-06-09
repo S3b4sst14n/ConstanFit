@@ -44,9 +44,20 @@ function puedeGestionarRol(solicitante, rolObjetivo) {
   return permitidos.has(rolObjetivo);
 }
 
-export async function list(_req, res) {
+// Visibilidad en el listado (distinta de la gestión): el DUEÑO (OWNER) no debe
+// ver cuentas ADMIN en absoluto. Sigue viendo al resto (incluidas otras OWNER),
+// solo que no puede gestionarlas. El servidor es la fuente de verdad.
+const ROLES_OCULTOS_POR_ROL = {
+  OWNER: ["ADMIN"],
+};
+
+export async function list(req, res) {
+  const ocultos = ROLES_OCULTOS_POR_ROL[req.user.role] ?? [];
   const items = await prisma.usuario.findMany({
-    where: { deletedAt: null },
+    where: {
+      deletedAt: null,
+      ...(ocultos.length ? { rol: { nombre: { notIn: ocultos } } } : {}),
+    },
     include: { rol: true },
     orderBy: { username: "asc" },
   });

@@ -169,9 +169,11 @@ const Usuarios = () => {
       : error?.status === 403 ? 'Esta sección es solo para administradores.'
         : 'No se pudieron cargar los datos. Revisa que el servidor esté activo.';
 
+  // El DUEÑO no ve cuentas ADMIN (el servidor las filtra), así que tampoco
+  // mostramos la métrica de administradores: siempre sería 0 y los delataría.
   const metricCards = [
     { key: 'total',  label: 'Usuarios',        value: metrics.total },
-    { key: 'admins', label: 'Administradores', value: metrics.admins },
+    ...(me?.role === 'OWNER' ? [] : [{ key: 'admins', label: 'Administradores', value: metrics.admins }]),
     { key: 'activos', label: 'Activos',        value: metrics.activos },
   ];
 
