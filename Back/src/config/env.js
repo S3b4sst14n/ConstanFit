@@ -7,9 +7,13 @@ for (const key of required) {
   }
 }
 
+const nodeEnv = process.env.NODE_ENV ?? "development";
+
 export const env = {
   port: Number(process.env.PORT ?? 4000),
-  nodeEnv: process.env.NODE_ENV ?? "development",
+  nodeEnv,
+  // Nivel de log de pino. Por defecto: detallado en dev, sobrio en prod.
+  logLevel: process.env.LOG_LEVEL ?? (nodeEnv === "production" ? "info" : "debug"),
   // Acepta uno o varios orígenes separados por coma (p. ej. el dominio de Vercel + localhost).
   corsOrigin: (process.env.CORS_ORIGIN ?? "http://localhost:5173")
     .split(",")
