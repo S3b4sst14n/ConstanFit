@@ -282,7 +282,7 @@ const Asistencias = () => {
       ? Math.min(100, Math.round((distintosHoy / clientes.length) * 100))
       : null;
 
-    return { hoy: hoy.length, presentes: distintosHoy, mes, pct };
+    return { hoy: hoy.length, mes, pct };
   }, [enriched, clientes]);
 
   /* ── Filtrado ── */
@@ -556,7 +556,6 @@ const Asistencias = () => {
       {/* ───────── Panel de estadísticas ───────── */}
       <section className="ga-stats" aria-label="Resumen">
         <StatCard label="Asistencias del día" value={stats.hoy} hint="Registros de hoy" />
-        <StatCard label="Personas presentes" value={stats.presentes} hint="Usuarios distintos hoy" />
         <StatCard label="Registros del mes" value={stats.mes} hint="Mes en curso" />
         <StatCard
           label="Porcentaje de asistencia"

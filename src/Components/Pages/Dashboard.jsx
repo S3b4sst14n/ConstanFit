@@ -7,10 +7,10 @@ import './Dashboard.css';
 
 const PLAN_TONE = { Mensual: 'green', Quincenal: 'amber', Diario: 'pink' };
 
-// Pesos colombianos (COP). Se añade el sufijo "COP" para que el "$" no se
-// confunda con dólares.
+// Pesos colombianos: el sufijo "COP" ya identifica la moneda, así que no
+// anteponemos "$" (sería redundante).
 const formatCurrency = (n) =>
-  `$${Number(n).toLocaleString('es-CO')} COP`;
+  `${Number(n).toLocaleString('es-CO')} COP`;
 
 const initials = (nombre, apellido) =>
   `${nombre?.[0] ?? ''}${apellido?.[0] ?? ''}`.toUpperCase();

@@ -18,7 +18,7 @@ const CAT_TONE = Object.fromEntries(CATEGORIAS.map((c) => [c.value, c.tone]));
 const METODOS = ['efectivo', 'tarjeta', 'transferencia', 'nequi'];
 const LOW_STOCK = 5; // umbral para marcar "stock bajo"
 
-const formatCOP = (n) => `$${Number(n || 0).toLocaleString('es-CO')} COP`;
+const formatCOP = (n) => `${Number(n || 0).toLocaleString('es-CO')} COP`;
 
 const todayISO = () => {
   const d = new Date();
