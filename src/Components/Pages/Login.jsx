@@ -21,8 +21,10 @@ const Login = () => {
     setSubmitting(true);
     try {
       const loggedUser = await login({ username, password });
-      const isStaff = ['ADMIN', 'STAFF'].includes(loggedUser?.role);
-      navigate(isStaff ? '/Dashboard' : '/', { replace: true });
+      // Roles que tienen panel: ADMIN, DUEÑO (OWNER) y Personal (STAFF). El
+      // resto (CLIENT) va al inicio.
+      const entraAlPanel = ['ADMIN', 'OWNER', 'STAFF'].includes(loggedUser?.role);
+      navigate(entraAlPanel ? '/Dashboard' : '/', { replace: true });
     } catch (err) {
       setError(err.message || 'No se pudo iniciar sesión');
     } finally {
