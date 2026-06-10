@@ -6,8 +6,8 @@
 // para sus gradientes (useId) y así no colisionan al repetirse en página.
 import { useId } from 'react';
 
-const GOLD = '#f0b429';
-const GOLD_BRIGHT = '#ffd166';
+const GOLD = '#6366FF';
+const GOLD_BRIGHT = '#9D9FFF';
 const STROKE = 2;
 
 // Lienzo común: fija viewBox, paleta y deja el ícono escalar con `size`.

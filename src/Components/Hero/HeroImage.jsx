@@ -3,9 +3,8 @@ import Model from "../../assets/images/Model.png";
 const HeroImage = () => {
   return (
     <div className="hero-image">
-      <div className="hero-image__glow" aria-hidden />
-
       <div className="hero-image__card">
+        <div className="hero-image__glow" aria-hidden />
         <img src={Model} alt="Atleta entrenando en ConstanFit" />
       </div>
 

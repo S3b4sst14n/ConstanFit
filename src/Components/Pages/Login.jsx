@@ -38,6 +38,7 @@ const Login = () => {
 
         {/* Lado visual */}
         <aside className="login-visual">
+          <div className="login-visual__glow" aria-hidden />
           <img src={Model} alt="Atleta ConstanFit" className="login-visual__img" />
           <div className="login-visual__overlay">
             <span className="login-visual__overline">ConstanFit</span>

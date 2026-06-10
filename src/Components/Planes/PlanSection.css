@@ -110,7 +110,7 @@
 
 /* ─── Destacada ─────────────────────────────────────── */
 .plan-card--featured {
-  background: linear-gradient(165deg, rgba(240, 180, 41, 0.10), var(--bg-1, rgba(0, 0, 0, 0.4)) 55%);
+  background: linear-gradient(165deg, rgba(99, 102, 255, 0.10), var(--bg-1, rgba(0, 0, 0, 0.4)) 55%);
   padding: var(--sp-16, 3.5rem) var(--sp-6, 1.75rem) var(--sp-8, 1.75rem);
   transform: scale(1.04);
   box-shadow: var(--sh-4), var(--sh-gold, var(--featured-glow));
@@ -124,7 +124,7 @@
   z-index: -1;
   border-radius: inherit;
   padding: 1.5px;
-  background: var(--grad-gold, linear-gradient(135deg, #ffd166, #c8881a));
+  background: var(--grad-gold, linear-gradient(135deg, #9D9FFF, #4A4C80));
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
@@ -134,7 +134,7 @@
 
 .plan-card--featured:hover {
   transform: scale(1.04) translateY(-8px);
-  box-shadow: var(--sh-4), 0 16px 48px var(--gold-glow, rgba(240, 180, 41, 0.35));
+  box-shadow: var(--sh-4), 0 16px 48px var(--gold-glow, rgba(99, 102, 255, 0.35));
 }
 
 /* ─── Badge ─────────────────────────────────────────── */
@@ -144,7 +144,7 @@
   left: 50%;
   transform: translateX(-50%);
   background: var(--grad-gold, var(--accent));
-  color: #161009;
+  color: #fff;
   font-family: var(--font-body, 'Nunito', sans-serif);
   font-size: 0.7rem;
   font-weight: 700;
@@ -152,7 +152,7 @@
   text-transform: uppercase;
   padding: 0.4rem 0.9rem;
   border-radius: var(--r-full, 999px);
-  box-shadow: 0 4px 16px var(--gold-glow, rgba(240, 180, 41, 0.45));
+  box-shadow: 0 4px 16px var(--gold-glow, rgba(99, 102, 255, 0.45));
   white-space: nowrap;
   z-index: 1;
 }
@@ -173,14 +173,14 @@
 }
 
 .plan-card:hover .plan-card__icon-wrapper {
-  border-color: rgba(240, 180, 41, 0.4);
-  background: rgba(240, 180, 41, 0.08);
+  border-color: rgba(99, 102, 255, 0.4);
+  background: rgba(99, 102, 255, 0.08);
 }
 
 .plan-card--featured .plan-card__icon-wrapper {
-  border-color: rgba(240, 180, 41, 0.4);
-  background: rgba(240, 180, 41, 0.06);
-  box-shadow: 0 0 24px rgba(240, 180, 41, 0.18);
+  border-color: rgba(99, 102, 255, 0.4);
+  background: rgba(99, 102, 255, 0.06);
+  box-shadow: 0 0 24px rgba(99, 102, 255, 0.18);
 }
 
 /* ─── Título ────────────────────────────────────────── */
@@ -271,7 +271,7 @@
 
 .plan-card--featured .plan-card__perks li svg {
   color: var(--gold, var(--accent));
-  background: rgba(240, 180, 41, 0.15);
+  background: rgba(99, 102, 255, 0.15);
 }
 
 /* ─── Botón ─────────────────────────────────────────── */
@@ -297,21 +297,21 @@
 .plan-card__btn:hover {
   border-color: var(--gold, var(--accent));
   color: var(--gold, var(--accent));
-  background: rgba(240, 180, 41, 0.08);
+  background: rgba(99, 102, 255, 0.08);
   transform: translateY(-2px);
 }
 
 .plan-card__btn--featured {
   background: var(--grad-gold, var(--accent));
   border-color: transparent;
-  color: #161009;
+  color: #fff;
   box-shadow: var(--sh-gold, none);
 }
 
 .plan-card__btn--featured:hover {
-  color: #161009;
+  color: #fff;
   background: var(--grad-gold, var(--accent));
-  box-shadow: 0 12px 32px var(--gold-glow, rgba(240, 180, 41, 0.35));
+  box-shadow: 0 12px 32px var(--gold-glow, rgba(99, 102, 255, 0.35));
 }
 
 /* ═══ Carrusel (solo móvil) ═════════════════════════════ */
@@ -364,8 +364,8 @@
 }
 
 .carousel-btn:hover {
-  background: rgba(240, 180, 41, 0.18);
-  border-color: rgba(240, 180, 41, 0.5);
+  background: rgba(99, 102, 255, 0.18);
+  border-color: rgba(99, 102, 255, 0.5);
   transform: translateY(-50%) scale(1.08);
 }
 

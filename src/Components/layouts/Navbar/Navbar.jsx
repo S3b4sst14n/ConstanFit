@@ -13,15 +13,39 @@ import {
   faRightFromBracket,
   faBars,
   faXmark,
+  faGaugeHigh,
+  faCashRegister,
+  faCalendarCheck,
+  faUsersGear,
 } from "@fortawesome/free-solid-svg-icons";
 
-// Solo enlaces del sitio público. La navegación de administración (Panel,
-// Asistencias) vive en el sidebar del panel, no en este navbar.
+// Enlaces del sitio público: visibles siempre, para cualquier rol.
 const publicLinks = [
   { to: "/",        label: "Inicio",             icon: faHome, end: true },
   { to: "/Planes",  label: "Planes",             icon: faDumbbell },
   { to: "/Acerca",  label: "Acerca de nosotros", icon: faPersonRunning },
 ];
+
+// Ítems del panel indexados por clave reutilizable (misma fuente que el
+// sidebar del Dashboard, ver DashboardLayout.jsx).
+const ADMIN_ITEMS = {
+  panel: { to: "/Dashboard", label: "Panel", icon: faGaugeHigh, end: true },
+  ingresos: { to: "/Dashboard/Ingresos", label: "Ingresos", icon: faCashRegister },
+  asistencias: { to: "/Dashboard/Asistencias", label: "Asistencias", icon: faCalendarCheck },
+  usuarios: { to: "/Dashboard/Usuarios", label: "Usuarios", icon: faUsersGear },
+};
+
+// Qué páginas del panel se habilitan en el nav según el rol tras iniciar
+// sesión. CLIENT (y cualquier rol desconocido) no ve enlaces de admin.
+const ADMIN_LINKS_BY_ROLE = {
+  ADMIN: ["panel", "ingresos", "asistencias", "usuarios"],
+  OWNER: ["panel", "ingresos", "asistencias", "usuarios"],
+  STAFF: ["asistencias", "ingresos", "panel"],
+};
+
+function adminLinksForRole(role) {
+  return (ADMIN_LINKS_BY_ROLE[role] ?? []).map((key) => ADMIN_ITEMS[key]);
+}
 
 const MOBILE_BREAKPOINT = 900;
 
@@ -102,7 +126,21 @@ const Navbar = () => {
           <ul className="nav-links">
             {publicLinks.map(renderLink)}
 
-            {/* Botón de iniciar/cerrar sesión ocultado */}
+            {/* Tras iniciar sesión se habilitan las páginas del panel
+                permitidas para el rol (ver ADMIN_LINKS_BY_ROLE), separadas
+                visualmente de las vistas públicas. */}
+            {(() => {
+              const adminLinks = user ? adminLinksForRole(user.role) : [];
+              if (adminLinks.length === 0) return null;
+              return (
+                <>
+                  <li className="nav-divider" aria-hidden />
+                  {adminLinks.map(renderLink)}
+                </>
+              );
+            })()}
+
+            {/* Botón de iniciar/cerrar sesión */}
             <li className="nav-cta">
               {user ? (
                 <button type="button" onClick={handleLogout} className="nav-cta-link nav-cta-btn">

@@ -9,23 +9,23 @@
   --surface: rgba(255, 255, 255, 0.05);
   --surface-2: rgba(255, 255, 255, 0.035);
   --surface-3: rgba(255, 255, 255, 0.08);
-  --primary: #f0b429;
-  --primary-bright: #ffd166;
-  --primary-soft: rgba(240, 180, 41, 0.12);
+  --primary: #6366FF;
+  --primary-bright: #9D9FFF;
+  --primary-soft: rgba(99, 102, 255, 0.12);
   --text: #f5f5f4;
   --text-2: rgba(245, 245, 244, 0.66);
   --text-3: rgba(245, 245, 244, 0.42);
   --border: rgba(255, 255, 255, 0.12);
   --border-strong: rgba(255, 255, 255, 0.22);
   --danger: #f87171;
-  --ring: rgba(240, 180, 41, 0.32);
+  --ring: rgba(99, 102, 255, 0.32);
 
   --radius: 16px;
   --radius-sm: 11px;
   --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.35);
   --shadow-md: 0 12px 32px rgba(0, 0, 0, 0.45);
   --shadow-lg: 0 24px 64px rgba(0, 0, 0, 0.6);
-  --grad-gold: linear-gradient(135deg, #f0b429, #ffd97a);
+  --grad-gold: linear-gradient(135deg, #6366FF, #9D9FFF);
 
   font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
   color: var(--text);
@@ -146,8 +146,8 @@
 
 .ga-btn--primary {
   background: var(--grad-gold);
-  color: #161009;
-  box-shadow: 0 8px 24px rgba(240, 180, 41, 0.2);
+  color: #fff;
+  box-shadow: 0 8px 24px rgba(99, 102, 255, 0.2);
 }
 .ga-btn--primary:hover { filter: brightness(1.06); transform: translateY(-1px); }
 .ga-btn--primary:active { transform: translateY(0); }
@@ -160,7 +160,7 @@
 .ga-btn--ghost:hover { background: var(--surface-3); border-color: var(--border-strong); }
 .ga-btn--ghost.is-active {
   color: var(--primary);
-  border-color: rgba(240, 180, 41, 0.5);
+  border-color: rgba(99, 102, 255, 0.5);
   background: var(--primary-soft);
 }
 
@@ -179,7 +179,7 @@
   padding: 0 5px;
   font-size: 0.72rem;
   font-weight: 800;
-  color: #161009;
+  color: #fff;
   background: var(--primary);
   border-radius: 999px;
 }
@@ -223,7 +223,7 @@
   position: absolute;
   inset: 0 0 auto 0;
   height: 2px;
-  background: linear-gradient(90deg, rgba(240, 180, 41, 0.7), transparent 70%);
+  background: linear-gradient(90deg, rgba(99, 102, 255, 0.7), transparent 70%);
 }
 
 .ga-stat-label {
@@ -410,7 +410,7 @@
 }
 
 .ga-table tbody tr { transition: background 0.12s ease; }
-.ga-table tbody tr:hover { background: rgba(240, 180, 41, 0.06); }
+.ga-table tbody tr:hover { background: rgba(99, 102, 255, 0.06); }
 .ga-table tbody tr:last-child td { border-bottom: none; }
 
 .is-id { width: 64px; color: var(--text-2); font-variant-numeric: tabular-nums; }
@@ -428,7 +428,7 @@
   border-radius: 50%;
   font-size: 0.74rem;
   font-weight: 800;
-  color: #161009;
+  color: #fff;
   background: var(--grad-gold);
 }
 
@@ -759,9 +759,9 @@
 }
 .ga-seg:hover { color: var(--text); }
 .ga-seg.is-active {
-  color: #161009;
+  color: #fff;
   background: var(--grad-gold);
-  box-shadow: 0 4px 12px rgba(240, 180, 41, 0.2);
+  box-shadow: 0 4px 12px rgba(99, 102, 255, 0.2);
 }
 .ga-seg:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--ring); }
 
@@ -832,7 +832,7 @@
 .ga-daycol.is-today .ga-daycol-name,
 .ga-daycol.is-today .ga-daycol-num { color: var(--primary-bright); }
 .ga-daycol.is-today,
-.ga-daycell.is-today { background: rgba(240, 180, 41, 0.06); }
+.ga-daycell.is-today { background: rgba(99, 102, 255, 0.06); }
 
 .ga-daycell { text-align: center; }
 
@@ -856,8 +856,8 @@
 .ga-check.is-on {
   background: var(--grad-gold);
   border-color: transparent;
-  color: #161009;
-  box-shadow: 0 4px 12px rgba(240, 180, 41, 0.22);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(99, 102, 255, 0.22);
 }
 .ga-check.is-on:hover { filter: brightness(1.05); }
 .ga-check.is-pending { opacity: 0.5; cursor: progress; }

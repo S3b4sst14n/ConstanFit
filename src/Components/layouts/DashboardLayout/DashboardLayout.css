@@ -81,7 +81,7 @@ body.no-nav-offset {
   border-radius: 50%;
   border: 1px solid rgba(255, 255, 255, 0.18);
   background: #15151a;
-  color: #f0b429;
+  color: #6366FF;
   font-size: 0.8rem;
   cursor: pointer;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
@@ -90,12 +90,12 @@ body.no-nav-offset {
 
 .dsidebar-toggle:hover {
   background: #20202a;
-  border-color: rgba(240, 180, 41, 0.5);
+  border-color: rgba(99, 102, 255, 0.5);
   transform: translate(-50%, -50%) scale(1.08);
 }
 
 .dsidebar-toggle:focus-visible {
-  outline: 2px solid #f0b429;
+  outline: 2px solid #6366FF;
   outline-offset: 2px;
 }
 
@@ -172,17 +172,17 @@ body.no-nav-offset {
 }
 
 .dsidebar-link:focus-visible {
-  outline: 2px solid #f0b429;
+  outline: 2px solid #6366FF;
   outline-offset: 2px;
 }
 
 .dsidebar-link.active {
-  background: rgba(240, 180, 41, 0.14);
+  background: rgba(99, 102, 255, 0.14);
   color: #fff;
 }
 
 .dsidebar-link.active .dsidebar-ico {
-  color: #ffd166;
+  color: #9D9FFF;
 }
 
 .dsidebar-ico {
@@ -192,7 +192,7 @@ body.no-nav-offset {
   width: 24px;
   flex-shrink: 0;
   font-size: 1.05rem;
-  color: #f0b429;
+  color: #6366FF;
 }
 
 .dsidebar-label {
@@ -227,8 +227,8 @@ body.no-nav-offset {
   border-radius: 50%;
   font-size: 0.78rem;
   font-weight: 800;
-  color: #161009;
-  background: linear-gradient(135deg, #f0b429, #ffd97a);
+  color: #fff;
+  background: linear-gradient(135deg, #6366FF, #9D9FFF);
 }
 
 .dsidebar-username {

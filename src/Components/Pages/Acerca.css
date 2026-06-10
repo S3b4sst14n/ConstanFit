@@ -144,8 +144,8 @@
 
 .about-card__icon--accent {
   color: var(--accent);
-  border-color: rgba(240, 180, 41, 0.4);
-  box-shadow: 0 0 16px rgba(240, 180, 41, 0.15);
+  border-color: rgba(99, 102, 255, 0.4);
+  box-shadow: 0 0 16px rgba(99, 102, 255, 0.15);
 }
 
 /* ── Showcase: foto del gimnasio ────────── */
@@ -298,7 +298,7 @@
 
 .about-btn--primary {
   background: var(--accent);
-  color: #1a1a1a;
+  color: #fff;
   border: 1.5px solid var(--accent);
 }
 

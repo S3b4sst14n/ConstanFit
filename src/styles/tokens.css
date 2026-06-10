@@ -29,11 +29,11 @@
   --line: rgba(255, 255, 255, 0.08);
   --line-strong: rgba(255, 255, 255, 0.14);
 
-  /* ── Marca: dorado ── */
-  --gold: #f0b429;
-  --gold-bright: #ffd166;
-  --gold-deep: #c8881a;
-  --gold-glow: rgba(240, 180, 41, 0.22);
+  /* ── Marca: morado azulado neón ── */
+  --gold: #6366FF;
+  --gold-bright: #9D9FFF;
+  --gold-deep: #4A4C80;
+  --gold-glow: rgba(99, 102, 255, 0.45);
 
   /* ── Texto ── */
   --text-1: #f5f5f4;

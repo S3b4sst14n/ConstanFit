@@ -5,20 +5,20 @@
 .usr {
   --surface: rgba(255, 255, 255, 0.05);
   --surface-3: rgba(255, 255, 255, 0.08);
-  --primary: #f0b429;
-  --primary-bright: #ffd166;
+  --primary: #6366FF;
+  --primary-bright: #9D9FFF;
   --text: #f5f5f4;
   --text-2: rgba(245, 245, 244, 0.66);
   --text-3: rgba(245, 245, 244, 0.42);
   --border: rgba(255, 255, 255, 0.12);
   --border-strong: rgba(255, 255, 255, 0.22);
-  --ring: rgba(240, 180, 41, 0.32);
+  --ring: rgba(99, 102, 255, 0.32);
   --danger: #fca5a5;
 
   --radius: 16px;
   --radius-sm: 11px;
   --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.35);
-  --grad-gold: linear-gradient(135deg, #f0b429, #ffd97a);
+  --grad-gold: linear-gradient(135deg, #6366FF, #9D9FFF);
 
   font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
   color: var(--text);
@@ -72,7 +72,7 @@
   position: absolute;
   inset: 0 0 auto 0;
   height: 2px;
-  background: linear-gradient(90deg, rgba(240, 180, 41, 0.7), transparent 70%);
+  background: linear-gradient(90deg, rgba(99, 102, 255, 0.7), transparent 70%);
 }
 .usr-stat-label { font-size: 0.78rem; font-weight: 600; color: var(--text-2); text-transform: uppercase; letter-spacing: 0.05em; }
 .usr-stat-value {
@@ -120,7 +120,7 @@
 .usr-btn:active:not(:disabled) { transform: translateY(0); }
 .usr-btn:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--ring); }
 .usr-btn:disabled { opacity: 0.45; cursor: not-allowed; }
-.usr-btn--primary { background: var(--grad-gold); border-color: transparent; color: #161009; }
+.usr-btn--primary { background: var(--grad-gold); border-color: transparent; color: #fff; }
 .usr-btn--primary:hover:not(:disabled) { filter: brightness(1.06); transform: translateY(-1px); }
 
 /* Tabla */
@@ -155,7 +155,7 @@
   flex-shrink: 0;
   font-size: 0.78rem;
   font-weight: 800;
-  color: #161009;
+  color: #fff;
   background: var(--grad-gold);
 }
 .usr-name { font-weight: 600; display: inline-flex; align-items: center; gap: 0.45rem; }
@@ -165,7 +165,7 @@
   font-size: 0.62rem;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: #161009;
+  color: #fff;
   background: var(--primary);
   border-radius: 999px;
   padding: 0.05rem 0.4rem;
@@ -184,7 +184,7 @@
   border: 1px solid transparent;
 }
 .usr-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
-.usr-badge--gold    { color: #ffd166; background: rgba(240, 180, 41, 0.15); border-color: rgba(240, 180, 41, 0.4); }
+.usr-badge--gold    { color: #9D9FFF; background: rgba(99, 102, 255, 0.15); border-color: rgba(99, 102, 255, 0.4); }
 .usr-badge--blue    { color: #7dd3fc; background: rgba(56, 189, 248, 0.13); border-color: rgba(56, 189, 248, 0.28); }
 .usr-badge--green   { color: #6ee7a0; background: rgba(110, 231, 160, 0.13); border-color: rgba(110, 231, 160, 0.3); }
 .usr-badge--neutral { color: var(--text-2); background: var(--surface-3); border-color: var(--border); }
@@ -252,7 +252,7 @@
   font-size: 0.9rem;
 }
 .usr-input:focus-visible { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px var(--ring); }
-.usr-input option { color: #161009; }
+.usr-input option { color: #fff; }
 .usr-check { display: flex; align-items: center; gap: 0.55rem; font-size: 0.88rem; color: var(--text-2); cursor: pointer; }
 .usr-check input { width: 16px; height: 16px; accent-color: var(--primary); }
 .usr-form-error { margin: 0; font-size: 0.85rem; color: var(--danger); }

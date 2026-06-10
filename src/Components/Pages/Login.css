@@ -40,7 +40,20 @@
   overflow: hidden;
 }
 
+/* Glow neón DETRÁS del modelo: por debajo de la imagen recortada,
+   para que la luz emane por detrás del atleta (igual que el hero). */
+.login-visual__glow {
+  position: absolute;
+  inset: -4% 0 38% 0;
+  background: radial-gradient(circle at 50% 34%, var(--gold-glow, rgba(99, 102, 255, 0.45)), transparent 70%);
+  filter: blur(48px);
+  z-index: 0;
+  animation: login-glow-breathe 7s var(--ease, ease) infinite;
+}
+
 .login-visual__img {
+  position: relative;
+  z-index: 1;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -50,14 +63,18 @@
 .login-visual__overlay {
   position: absolute;
   inset: 0;
+  z-index: 2;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   gap: var(--sp-2, 0.5rem);
   padding: var(--sp-8, 2rem);
-  background:
-    radial-gradient(70% 50% at 80% 0%, var(--gold-glow, rgba(240, 180, 41, 0.18)), transparent 70%),
-    linear-gradient(to top, rgba(10, 10, 11, 0.92) 0%, rgba(10, 10, 11, 0.15) 55%, transparent 100%);
+  background: linear-gradient(to top, rgba(10, 10, 11, 0.92) 0%, rgba(10, 10, 11, 0.15) 55%, transparent 100%);
+}
+
+@keyframes login-glow-breathe {
+  0%, 100% { opacity: 0.85; transform: scale(1); }
+  50%      { opacity: 1;    transform: scale(1.06); }
 }
 
 .login-visual__overline {
@@ -141,7 +158,7 @@
 
 .login-input-group:focus-within {
   border-color: var(--gold, var(--accent));
-  box-shadow: 0 0 0 3px rgba(240, 180, 41, 0.16);
+  box-shadow: 0 0 0 3px rgba(99, 102, 255, 0.16);
 }
 
 .login-input-icon {
@@ -198,7 +215,7 @@
   border-radius: var(--r-full, 2rem);
   border: none;
   background: var(--grad-gold, #2d2d4e);
-  color: #161009;
+  color: #fff;
   font-family: var(--font-body, 'Nunito', sans-serif);
   font-size: 1rem;
   font-weight: 700;
@@ -213,7 +230,7 @@
 
 .login-btn-primary:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 12px 36px var(--gold-glow, rgba(240, 180, 41, 0.35));
+  box-shadow: 0 12px 36px var(--gold-glow, rgba(99, 102, 255, 0.35));
 }
 
 .login-btn-primary:hover:not(:disabled) svg {

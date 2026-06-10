@@ -109,7 +109,7 @@
 
 .btn--primary {
   background: var(--grad-gold);
-  color: #161009;
+  color: #fff;
   box-shadow: var(--sh-gold);
 }
 
@@ -172,16 +172,6 @@
   animation: hero-fade 0.9s var(--ease-out) 0.3s forwards;
 }
 
-/* Glow dorado DETRÁS de la imagen (no en un borde) */
-.hero-image__glow {
-  position: absolute;
-  inset: 8% 12%;
-  background: radial-gradient(circle at 50% 40%, var(--gold-glow), transparent 68%);
-  filter: blur(46px);
-  z-index: 0;
-  animation: hero-breathe 7s var(--ease) infinite;
-}
-
 .hero-image__card {
   position: relative;
   z-index: 1;
@@ -193,7 +183,20 @@
   overflow: hidden;
 }
 
+/* Glow neón DETRÁS del modelo: dentro de la tarjeta, por debajo de
+   la imagen recortada, para que la luz emane por detrás del atleta. */
+.hero-image__glow {
+  position: absolute;
+  inset: 2% 6% 30% 6%;
+  background: radial-gradient(circle at 50% 38%, var(--gold-glow), transparent 70%);
+  filter: blur(48px);
+  z-index: 0;
+  animation: hero-breathe 7s var(--ease) infinite;
+}
+
 .hero-image__card img {
+  position: relative;
+  z-index: 1;
   display: block;
   width: 100%;
   height: clamp(360px, 56vh, 560px);

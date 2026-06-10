@@ -3,23 +3,23 @@
   --glass-bg: rgba(255, 255, 255, 0.08);
   --glass-border: rgba(255, 255, 255, 0.18);
   --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
-  --accent: #f0b429;
+  --accent: #6366FF;
   --accent-green: #4ade80;
   --text-primary: #ffffff;
   --text-muted: rgba(255, 255, 255, 0.75);
-  --featured-glow: 0 0 30px rgba(240, 180, 41, 0.25);
+  --featured-glow: 0 0 38px rgba(99, 102, 255, 0.45);
 }
 
 body {
   width: 100%;
   min-height: 100vh;
   padding-top: 107px;
-  /* Profundidad por capas: un halo dorado cálido arriba-derecha
-     y un eco tenue abajo-izquierda sobre grafito. */
+  /* Profundidad por capas: un halo neón violeta arriba-derecha
+     y un eco abajo-izquierda sobre grafito. */
   background-color: var(--bg-0);
   background-image:
-    radial-gradient(60rem 60rem at 78% -12%, rgba(240, 180, 41, 0.10), transparent 60%),
-    radial-gradient(48rem 48rem at -8% 108%, rgba(240, 180, 41, 0.05), transparent 55%);
+    radial-gradient(60rem 60rem at 78% -12%, rgba(99, 102, 255, 0.18), transparent 60%),
+    radial-gradient(48rem 48rem at -8% 108%, rgba(124, 92, 255, 0.10), transparent 55%);
   background-attachment: fixed;
   background-repeat: no-repeat;
 }
